@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_dashboard">
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.amf.amflix.ui.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.amf.amflix.ui.movies.MovieListFragment"
+        tools:layout="@layout/fragment_movie_item_list" />
+
+    <fragment
+        android:id="@+id/navigation_series"
+        android:name="com.amf.amflix.ui.series.TVSeriesListFragment"
+        android:label="@string/title_series"
+        tools:layout="@layout/fragment_tv_series_item_list" />
+
+    <fragment
+        android:id="@+id/navigation_people"
+        android:name="com.amf.amflix.ui.people.PeopleListFragment"
+        android:label="@string/title_people"
+        tools:layout="@layout/fragment_people_item_list" />
+
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="com.amf.amflix.ui.movies.DetailFragment"
+        tools:layout="@layout/fragment_detail" />
+</navigation>
