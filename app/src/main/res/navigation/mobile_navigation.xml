@@ -32,4 +32,14 @@
         android:id="@+id/navigation_details"
         android:name="com.amf.amflix.ui.movies.DetailFragment"
         tools:layout="@layout/fragment_detail" />
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.amf.amflix.ui.signin.LoginFragment"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.amf.amflix.ui.signin.RegisterFragment"
+        tools:layout="@layout/fragment_register" />
 </navigation>

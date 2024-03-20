@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "162031321949",
+    "project_id": "amflix-67708",
+    "storage_bucket": "amflix-67708.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162031321949:android:4e258b21b6c7743c209eb4",
+        "android_client_info": {
+          "package_name": "com.amf.amflix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr9DIoe7p7RoNp9ZszB2olodkRMs8pkF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

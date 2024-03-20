@@ -46,6 +46,12 @@ class DashboardFragment : Fragment() {
             navController.navigate(R.id.navigation_movies)
         }
 
+        cardView2.setOnClickListener {
+            Toast.makeText(requireContext(), "Login", Toast.LENGTH_SHORT).show()
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_login)
+        }
+
 
         return view
     }
