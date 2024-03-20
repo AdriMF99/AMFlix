@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
 import com.amf.amflix.databinding.FragmentDashboardBinding
 import com.amf.amflix.ui.movies.MovieListFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class DashboardFragment : Fragment() {
 
@@ -50,6 +52,11 @@ class DashboardFragment : Fragment() {
             Toast.makeText(requireContext(), "Login", Toast.LENGTH_SHORT).show()
             val navController = findNavController()
             navController.navigate(R.id.navigation_login)
+        }
+
+        binding.txtUserLog.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            Toast.makeText(requireContext(), "Sesión cerrada!", Toast.LENGTH_SHORT).show()
         }
 
 
