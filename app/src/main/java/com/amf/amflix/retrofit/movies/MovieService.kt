@@ -1,6 +1,5 @@
 package com.amf.amflix.retrofit.movies
 
-import com.amf.amflix.retrofit.models.cast.MovieCredits
 import com.amf.amflix.retrofit.models.movies.PopularMoviesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,7 +17,4 @@ interface MovieService {
 
     @GET("movie/top_rated")
     fun getPopularMovies(): retrofit2.Call<PopularMoviesResponse>
-
-    @GET("movie/{movie_id}/credits")
-    suspend fun getMovieCredits(@Path("movie_id") movieId: Int): MovieCredits
 }
