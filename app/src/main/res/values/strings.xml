@@ -1,4 +1,5 @@
 <resources>
+    <string name="default_web_client_id">162031321949-0cg45fc542h223ehhmpd6m0gt4b7ogte.apps.googleusercontent.com</string>
     <string name="app_name">Movies App</string>
     <string name="title_movies">Top Movies</string>
     <string name="content_description_media">image-movie</string>

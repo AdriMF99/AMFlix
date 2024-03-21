@@ -1,20 +1,25 @@
 package com.amf.amflix.ui.signin
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
-import com.amf.amflix.databinding.FragmentDashboardBinding
 import com.amf.amflix.databinding.FragmentLoginBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginFragment : Fragment() {
 
@@ -22,6 +27,8 @@ class LoginFragment : Fragment() {
     private lateinit var goreg: TextView
     private lateinit var txtusername: EditText
     private lateinit var txtpass: EditText
+    private lateinit var logoogle: LinearLayout
+    private val GOOGLE_SIGN_IN = 100
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,6 +90,18 @@ class LoginFragment : Fragment() {
                     }
             }
         }
+
+        binding.LogGoogle.setOnClickListener {
+            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+            val googleClient = GoogleSignIn.getClient(requireContext(), googleConf)
+            googleClient.signOut()
+
+            startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+        }
     }
 
     override fun onDestroyView() {
@@ -109,5 +128,32 @@ class LoginFragment : Fragment() {
         builder.setPositiveButton("Aceptar", null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+            try {
+                val account = task.getResult(ApiException::class.java)
+
+                if (account != null){
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            Toast.makeText(requireContext(), "Has iniciado sesión!", Toast.LENGTH_SHORT).show()
+                        } else{
+                            showAlert()
+                        }
+                    }
+                }
+            } catch (e: ApiException){
+                showAlert()
+            }
+
+        }
     }
 }

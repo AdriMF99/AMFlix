@@ -12,7 +12,12 @@
           "package_name": "com.amf.amflix"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "162031321949-0cg45fc542h223ehhmpd6m0gt4b7ogte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBr9DIoe7p7RoNp9ZszB2olodkRMs8pkF4"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162031321949-0cg45fc542h223ehhmpd6m0gt4b7ogte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
