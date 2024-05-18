@@ -8,5 +8,6 @@ data class People(
     val known_for_department: String,
     val name: String,
     val popularity: Double,
-    val profile_path: String
+    val profile_path: String,
+    val backdrop_path: String
 )

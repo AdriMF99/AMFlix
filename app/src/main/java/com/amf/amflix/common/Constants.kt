@@ -6,10 +6,6 @@ class Constants {
      * Esta clase define constantes que se utilizan en toda la aplicación,
      * como la URL base de la API, la clave de la API,
      * URL para imágenes y otros valores relacionados con la API.
-     *
-     * @author DaveDev117
-     * @version 1.0
-     * @since 10/10/2023
      */
 
     companion object{

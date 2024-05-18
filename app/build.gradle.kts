@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id ("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -65,6 +66,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-core:1.0.4")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
+
+    //Android RX
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
 
     implementation ("com.github.qamarelsafadi:CurvedBottomNavigation:0.1.3")
 

@@ -1,11 +1,10 @@
-package com.amf.amflix.retrofit.models.movies
+package com.amf.amflix.retrofit.models.Cast
 
 import com.amf.amflix.common.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class MovieInterceptor: Interceptor {
-
+class CastInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val urlWithParams = chain.request()
             .url

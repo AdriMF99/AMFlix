@@ -1,19 +1,21 @@
 package com.amf.amflix.ui.movies
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
-import com.amf.amflix.databinding.ActivityMainBinding
+import com.amf.amflix.retrofit.Cast.CastClient
+import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,6 +23,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class DetailFragment : Fragment() {
     private val movieviewmodel: MovieViewModel by activityViewModels()
     private lateinit var v: View
+    private lateinit var castRecyclerView: RecyclerView
+    private lateinit var castAdapter: CastAdapter
     private lateinit var movieTitle: TextView
     private lateinit var originalTitle: TextView
     private lateinit var movieReleaseDate: TextView
@@ -45,8 +49,6 @@ class DetailFragment : Fragment() {
             navController.popBackStack()
         }
 
-
-
         return v
     }
 
@@ -70,6 +72,8 @@ class DetailFragment : Fragment() {
         movieOverview = v.findViewById(R.id.movieOverview)
         moviePoster = v.findViewById(R.id.movieThumbnail)
         flecha = v.findViewById(R.id.backarrow)
+        castRecyclerView = v.findViewById(R.id.cast_list)
+        castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun updateUI() {
@@ -90,7 +94,29 @@ class DetailFragment : Fragment() {
             .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
             .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
             .into(moviePoster)
+
+        loadCast(movie.id)
     }
+
+    private fun loadCast(movieId: Int) {
+        val call = CastClient.getInstance().getMovieCast(movieId)
+        call.enqueue(object : retrofit2.Callback<CastResponse> {
+            override fun onResponse(call: retrofit2.Call<CastResponse>, response: retrofit2.Response<CastResponse>) {
+                if (response.isSuccessful) {
+                    val castList = response.body()?.cast ?: emptyList()
+                    castAdapter = CastAdapter(castList)
+                    castRecyclerView.adapter = castAdapter
+                } else {
+                    Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<CastResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
+
 
     private fun hideBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)

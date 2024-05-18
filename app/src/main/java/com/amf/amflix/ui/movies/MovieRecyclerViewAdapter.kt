@@ -38,8 +38,6 @@ class MovieRecyclerViewAdapter(private val values: List<Movie>) : RecyclerView.A
 
     }
 
-
-
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = movies[position]
@@ -66,8 +64,6 @@ class MovieRecyclerViewAdapter(private val values: List<Movie>) : RecyclerView.A
         holder.itemView.setOnClickListener {
             click?.invoke(position, item)
         }
-        //val blur = RenderEffect.createBlurEffect(50F, 50F, Shader.TileMode.CLAMP)
-        //holder.ivBackdrop.setRenderEffect(blur)
     }
     override fun getItemCount(): Int = movies.size
 

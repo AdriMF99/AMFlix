@@ -4,6 +4,6 @@ import com.amf.amflix.retrofit.models.series.TopTVSeriesResponse
 import retrofit2.http.GET
 
 interface TVSeriesService {
-    @GET("tv/top_rated")
+    @GET("tv/popular")
     fun getTopTVSeries(): retrofit2.Call<TopTVSeriesResponse>
 }
