@@ -1,5 +1,6 @@
 package com.amf.amflix.ui.movies
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +35,14 @@ class DetailFragment : Fragment() {
     private lateinit var movieVoteCount: TextView
     private lateinit var movieOverview: TextView
     private lateinit var moviePoster: PhotoView
+    private lateinit var backdrop: ImageView
     private lateinit var flecha: ImageButton
+
+    private var isExpanded = false
+    private val smallWidth = 100 // dp
+    private val smallHeight = 150 // dp
+    private val largeWidth = 300 // dp
+    private val largeHeight = 450 // dp
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +82,13 @@ class DetailFragment : Fragment() {
         moviePoster = v.findViewById(R.id.movieThumbnail)
         flecha = v.findViewById(R.id.backarrow)
         castRecyclerView = v.findViewById(R.id.cast_list)
+        backdrop = v.findViewById(R.id.backgroundImage)
         castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        // OnClickListener para cambiar el tamaño de la imagen
+        moviePoster.setOnClickListener {
+            toggleSize(moviePoster)
+        }
     }
 
     private fun updateUI() {
@@ -94,6 +109,13 @@ class DetailFragment : Fragment() {
             .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
             .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
             .into(moviePoster)
+
+        Glide.with(this)
+            .load(Constants.IMAGE_BASE_URL + movie.backdrop_path)
+            .override(350, 200)
+            .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
+            .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
+            .into(backdrop)
 
         loadCast(movie.id)
     }
@@ -117,6 +139,41 @@ class DetailFragment : Fragment() {
         })
     }
 
+
+    private fun toggleSize(view: PhotoView) {
+        val startWidth = if (isExpanded) largeWidth else smallWidth
+        val endWidth = if (isExpanded) smallWidth else largeWidth
+        val startHeight = if (isExpanded) largeHeight else smallHeight
+        val endHeight = if (isExpanded) smallHeight else largeHeight
+
+        val widthAnimator = ValueAnimator.ofInt(startWidth, endWidth)
+        widthAnimator.addUpdateListener {
+            val layoutParams = view.layoutParams
+            layoutParams.width = (it.animatedValue as Int).dpToPx()
+            view.layoutParams = layoutParams
+        }
+
+        val heightAnimator = ValueAnimator.ofInt(startHeight, endHeight)
+        heightAnimator.addUpdateListener {
+            val layoutParams = view.layoutParams
+            layoutParams.height = (it.animatedValue as Int).dpToPx()
+            view.layoutParams = layoutParams
+        }
+
+        widthAnimator.duration = 300
+        heightAnimator.duration = 300
+
+        widthAnimator.start()
+        heightAnimator.start()
+
+        isExpanded = !isExpanded
+    }
+
+    // Extension function to convert dp to pixels
+    private fun Int.dpToPx(): Int {
+        val density = resources.displayMetrics.density
+        return (this * density).toInt()
+    }
 
     private fun hideBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
