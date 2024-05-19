@@ -1,6 +1,9 @@
 package com.amf.amflix.retrofit.movies
 
 import com.amf.amflix.common.Constants
+import com.amf.amflix.retrofit.Cast.CastClient
+import com.amf.amflix.retrofit.models.Cast.CastResponse
+import com.amf.amflix.retrofit.models.movies.Movie
 import com.amf.amflix.retrofit.models.movies.MovieInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -21,6 +24,12 @@ class MovieClient {
             }
     }
 
+    fun getInstance(): MovieClient {
+        return MovieClient.instance ?: synchronized(this) {
+            MovieClient.instance ?: MovieClient().also { MovieClient.instance = it }
+        }
+    }
+
     init {
         val okHttpClientBuilder = OkHttpClient.Builder()
         okHttpClientBuilder.addInterceptor(MovieInterceptor())
@@ -37,5 +46,8 @@ class MovieClient {
     }
 
     fun getMovieService() = movieService
+    fun getMovieDetails(movieId: Int): retrofit2.Call<Movie> {
+        return movieService.getMovieDetails(movieId)
+    }
 
 }

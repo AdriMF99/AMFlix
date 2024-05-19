@@ -12,8 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,11 +28,14 @@ import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
+import com.amf.amflix.retrofit.models.movies.Movie
+import com.amf.amflix.retrofit.movies.MovieClient
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.qamar.curvedbottomnaviagtion.setMargins
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,6 +58,10 @@ class DetailFragment : Fragment() {
     private lateinit var flecha: ImageButton
     private lateinit var currentMovieVideos: List<Video>
     private lateinit var playTrailerButton: FloatingActionButton
+    private lateinit var genresContainer: LinearLayout
+
+    var movieClient: MovieClient?= null
+
 
     private var isExpanded = false
     private val smallWidth = 100 // dp
@@ -101,6 +110,8 @@ class DetailFragment : Fragment() {
         backdrop = v.findViewById(R.id.backgroundImage)
         castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         playTrailerButton = v.findViewById(R.id.playTrailerButton)
+        genresContainer = v.findViewById(R.id.genresContainer)
+        movieClient = MovieClient.instance
 
         // OnClickListener para cambiar el tamaño de la imagen
         moviePoster.setOnClickListener {
@@ -138,9 +149,40 @@ class DetailFragment : Fragment() {
             .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
             .into(backdrop)
 
+        // Llamar al servicio para obtener los detalles de la película
+        movieClient?.getMovieDetails(movie.id)?.enqueue(object : Callback<Movie> {
+            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                if (response.isSuccessful) {
+                    val movieDetails = response.body()
+                    movieDetails?.genres?.let { genres ->
+                        // Mostrar los géneros en la interfaz de usuario
+                        genresContainer.removeAllViews()
+                        genres.forEach { genre ->
+                            val genreTextView = TextView(context).apply {
+                                text = genre.name
+                                setTextColor(ContextCompat.getColor(context, R.color.white))
+                                setBackgroundResource(R.drawable.genre_item_background)
+                                setPadding(16, 8, 16, 8)
+                                setTextSize(14f)
+                                setMargins(8, 0, 8, 0)
+                            }
+                            genresContainer.addView(genreTextView)
+                        }
+                    }
+                } else {
+                    Log.e("DetailFragment", "Error al obtener los detalles de la película: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<Movie>, t: Throwable) {
+                Log.e("DetailFragment", "Error al obtener los detalles de la película: ${t.message}")
+            }
+        })
+
         loadCast(movie.id)
         initializeCurrentMovieVideos(movie.id)
     }
+
 
     private fun loadCast(movieId: Int) {
         val call = CastClient.getInstance().getMovieCast(movieId)
@@ -160,6 +202,8 @@ class DetailFragment : Fragment() {
             }
         })
     }
+
+
 
     private fun initializeCurrentMovieVideos(movieId: Int) {
         lifecycleScope.launch {
