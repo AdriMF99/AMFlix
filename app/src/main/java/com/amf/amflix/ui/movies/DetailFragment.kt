@@ -1,6 +1,9 @@
 package com.amf.amflix.ui.movies
 
 import android.animation.ValueAnimator
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,17 +13,28 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
+import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
+import com.amf.amflix.retrofit.models.Video.Video
+import com.amf.amflix.retrofit.models.Video.VideoResponse
+import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetailFragment : Fragment() {
     private val movieviewmodel: MovieViewModel by activityViewModels()
@@ -37,6 +51,8 @@ class DetailFragment : Fragment() {
     private lateinit var moviePoster: PhotoView
     private lateinit var backdrop: ImageView
     private lateinit var flecha: ImageButton
+    private lateinit var currentMovieVideos: List<Video>
+    private lateinit var playTrailerButton: FloatingActionButton
 
     private var isExpanded = false
     private val smallWidth = 100 // dp
@@ -84,10 +100,15 @@ class DetailFragment : Fragment() {
         castRecyclerView = v.findViewById(R.id.cast_list)
         backdrop = v.findViewById(R.id.backgroundImage)
         castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        playTrailerButton = v.findViewById(R.id.playTrailerButton)
 
         // OnClickListener para cambiar el tamaño de la imagen
         moviePoster.setOnClickListener {
             toggleSize(moviePoster)
+        }
+
+        playTrailerButton.setOnClickListener {
+            showVideoOptionsDialog()
         }
     }
 
@@ -118,6 +139,7 @@ class DetailFragment : Fragment() {
             .into(backdrop)
 
         loadCast(movie.id)
+        initializeCurrentMovieVideos(movie.id)
     }
 
     private fun loadCast(movieId: Int) {
@@ -139,6 +161,46 @@ class DetailFragment : Fragment() {
         })
     }
 
+    private fun initializeCurrentMovieVideos(movieId: Int) {
+        lifecycleScope.launch {
+            try {
+                val call = VideoClient.getInstance().videoService.getMovieVideos(movieId, Constants.API_KEY)
+                call.enqueue(object : Callback<VideoResponse> {
+                    override fun onResponse(call: Call<VideoResponse>, response: Response<VideoResponse>) {
+                        if (response.isSuccessful) {
+                            currentMovieVideos = response.body()?.results?.filter { it.site == "YouTube" } ?: emptyList()
+                        } else {
+                            Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
+                        Log.e("DetailFragment", "Error: ${t.message}")
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun showVideoOptionsDialog() {
+        if (::currentMovieVideos.isInitialized && currentMovieVideos.isNotEmpty()) {
+            val videoTitles = currentMovieVideos.map { it.name }.toTypedArray()
+
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Select a Video")
+                .setItems(videoTitles) { _, which ->
+                    val selectedVideo = currentMovieVideos[which]
+                    val dialogFragment = VideoPlayerDialogFragment(selectedVideo.key)
+                    dialogFragment.show(parentFragmentManager, "videoPlayerDialog")
+                }
+            val dialog = builder.create()
+            dialog.show()
+        } else {
+            Toast.makeText(requireContext(), "No videos available :(", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun toggleSize(view: PhotoView) {
         val startWidth = if (isExpanded) largeWidth else smallWidth

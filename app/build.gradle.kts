@@ -71,6 +71,9 @@ dependencies {
     implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
 
+    // YT
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1")
+
     implementation ("com.github.qamarelsafadi:CurvedBottomNavigation:0.1.3")
 
     implementation("androidx.core:core-ktx:1.12.0")
