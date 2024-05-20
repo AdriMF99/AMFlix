@@ -1,9 +1,7 @@
-package com.amf.amflix.ui.movies
+package com.amf.amflix.ui.series
 
 import android.animation.ValueAnimator
 import android.app.AlertDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -18,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,40 +28,40 @@ import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
-import com.amf.amflix.retrofit.models.movies.Movie
-import com.amf.amflix.retrofit.movies.MovieClient
+import com.amf.amflix.retrofit.models.series.TVSeries
+import com.amf.amflix.retrofit.series.TVSeriesClient
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
+import com.amf.amflix.ui.movies.CastAdapter
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.qamar.curvedbottomnaviagtion.setMargins
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailFragment : Fragment() {
-    private val movieviewmodel: MovieViewModel by activityViewModels()
+class TvDetailFragment : Fragment() {
+    private val tvShowViewModel: TvSeriesViewModel by activityViewModels()
     private lateinit var v: View
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var castAdapter: CastAdapter
-    private lateinit var movieTitle: TextView
+    private lateinit var tvTitle: TextView
     private lateinit var originalTitle: TextView
-    private lateinit var movieReleaseDate: TextView
-    private lateinit var movieRating: TextView
-    private lateinit var moviePopularity: TextView
-    private lateinit var movieVoteCount: TextView
-    private lateinit var movieOverview: TextView
-    private lateinit var moviePoster: PhotoView
+    private lateinit var tvReleaseDate: TextView
+    private lateinit var tvRating: TextView
+    private lateinit var tvPopularity: TextView
+    private lateinit var tvVoteCount: TextView
+    private lateinit var tvOverview: TextView
+    private lateinit var tvPoster: PhotoView
     private lateinit var backdrop: ImageView
     private lateinit var flecha: ImageButton
-    private lateinit var currentMovieVideos: List<Video>
+    private lateinit var currentTvShowVideos: List<Video>
     private lateinit var playTrailerButton: FloatingActionButton
     private lateinit var genresContainer: LinearLayout
     private lateinit var tag: TextView
 
-    var movieClient: MovieClient?= null
+    var tvShowClient: TVSeriesClient?= null
 
 
     private var isExpanded = false
@@ -75,7 +74,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_detail, container, false)
+        v = inflater.inflate(R.layout.fragment_tv_detail, container, false)
         initializeViews()
 
         hideBottomNavigation()
@@ -93,32 +92,33 @@ class DetailFragment : Fragment() {
         updateUI()
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         showBottomNavigation()
     }
 
     private fun initializeViews() {
-        movieTitle = v.findViewById(R.id.movieTitle)
+        tvTitle = v.findViewById(R.id.tvTitle)
         originalTitle = v.findViewById(R.id.originalTitle)
-        movieReleaseDate = v.findViewById(R.id.movieReleaseDate)
-        movieRating = v.findViewById(R.id.movieRating)
-        moviePopularity = v.findViewById(R.id.moviePopularity)
-        movieVoteCount = v.findViewById(R.id.movieVoteCount)
-        movieOverview = v.findViewById(R.id.movieOverview)
-        moviePoster = v.findViewById(R.id.movieThumbnail)
+        tvReleaseDate = v.findViewById(R.id.tvReleaseDate)
+        tvRating = v.findViewById(R.id.tvRating)
+        tvPopularity = v.findViewById(R.id.tvPopularity)
+        tvVoteCount = v.findViewById(R.id.tvVoteCount)
+        tvOverview = v.findViewById(R.id.tvOverview)
+        tvPoster = v.findViewById(R.id.tvThumbnail)
         flecha = v.findViewById(R.id.backarrow)
-        castRecyclerView = v.findViewById(R.id.cast_list)
+        castRecyclerView = v.findViewById(R.id.tvcast_list)
         backdrop = v.findViewById(R.id.backgroundImage)
         castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         playTrailerButton = v.findViewById(R.id.playTrailerButton)
         genresContainer = v.findViewById(R.id.genresContainer)
-        tag = v.findViewById(R.id.taglineMovie)
-        movieClient = MovieClient.instance
+        tag = v.findViewById(R.id.taglinetv)
+        tvShowClient = TVSeriesClient.instance
 
         // OnClickListener para cambiar el tamaño de la imagen
-        moviePoster.setOnClickListener {
-            toggleSize(moviePoster)
+        tvPoster.setOnClickListener {
+            toggleSize(tvPoster)
         }
 
         playTrailerButton.setOnClickListener {
@@ -127,37 +127,36 @@ class DetailFragment : Fragment() {
     }
 
     private fun updateUI() {
-        val movie = movieviewmodel.selected ?: return
+        val tvShow = tvShowViewModel.selected ?: return
 
-        movieTitle.text = movie.title
-        originalTitle.text = movie.original_title
-        movieReleaseDate.text = movie.release_date
-        movieRating.text = movie.vote_average.toString()
-        moviePopularity.text = movie.popularity.toString()
-        movieVoteCount.text = movie.vote_count.toString()
-        movieOverview.text = movie.overview
+        tvTitle.text = tvShow.name
+        originalTitle.text = tvShow.original_name
+        tvReleaseDate.text = tvShow.first_air_date
+        tvRating.text = tvShow.vote_average.toString()
+        tvPopularity.text = tvShow.popularity.toString()
+        tvVoteCount.text = tvShow.vote_count.toString()
+        tvOverview.text = tvShow.overview
 
-        // Carga la imagen de la portada utilizando Glide
         Glide.with(this)
-            .load(Constants.IMAGE_BASE_URL + movie.poster_path)
+            .load(Constants.IMAGE_BASE_URL + tvShow.poster_path)
             .override(600, 900)
-            .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
-            .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
-            .into(moviePoster)
+            .placeholder(R.drawable.placeholder_load)
+            .error(R.drawable.error_image)
+            .into(tvPoster)
 
         Glide.with(this)
-            .load(Constants.IMAGE_BASE_URL + movie.backdrop_path)
+            .load(Constants.IMAGE_BASE_URL + tvShow.backdrop_path)
             .override(350, 200)
-            .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
-            .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
+            .placeholder(R.drawable.placeholder_load)
+            .error(R.drawable.error_image)
             .into(backdrop)
 
-        // Llamar al servicio para obtener los detalles de la película
-        movieClient?.getMovieDetails(movie.id)?.enqueue(object : Callback<Movie> {
-            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+        // Llamar al servicio para obtener los detalles de la serie de televisión
+        tvShowClient?.getTvShowDetails(tvShow.id)?.enqueue(object : Callback<TVSeries> {
+            override fun onResponse(call: Call<TVSeries>, response: Response<TVSeries>) {
                 if (response.isSuccessful) {
-                    val movieDetails = response.body()
-                    movieDetails?.genres?.let { genres ->
+                    val tvShowDetails = response.body()
+                    tvShowDetails?.genres?.let { genres ->
                         // Remueve todos los géneros previamente mostrados
                         genresContainer.removeAllViews()
 
@@ -189,27 +188,27 @@ class DetailFragment : Fragment() {
                             genresContainer.addView(genreTextView)
                         }
                     }
-                    movieDetails?.tagline?.let { tagline ->
+                    tvShowDetails?.tagline?.let { tagline ->
                         tag.text = tagline
                     }
                 } else {
-                    Log.e("DetailFragment", "Error al obtener los detalles de la película: ${response.code()}")
+                    Log.e("TvDetailFragment", "Error al obtener los detalles de la serie de televisión: ${response.code()}")
                 }
             }
 
-            override fun onFailure(call: Call<Movie>, t: Throwable) {
-                Log.e("DetailFragment", "Error al obtener los detalles de la película: ${t.message}")
+            override fun onFailure(call: Call<TVSeries>, t: Throwable) {
+                Log.e("TvDetailFragment", "Error al obtener los detalles de la serie de televisión: ${t.message}")
             }
         })
 
 
-        loadCast(movie.id)
-        initializeCurrentMovieVideos(movie.id)
+        loadCast(tvShow.id)
+        initializeCurrentTvShowVideos(tvShow.id)
     }
 
 
-    private fun loadCast(movieId: Int) {
-        val call = CastClient.getInstance().getMovieCast(movieId)
+    private fun loadCast(tvShowId: Int) {
+        val call = CastClient.getInstance().getTvShowCast(tvShowId)
         call.enqueue(object : retrofit2.Callback<CastResponse> {
             override fun onResponse(call: retrofit2.Call<CastResponse>, response: retrofit2.Response<CastResponse>) {
                 if (response.isSuccessful) {
@@ -217,33 +216,33 @@ class DetailFragment : Fragment() {
                     castAdapter = CastAdapter(castList)
                     castRecyclerView.adapter = castAdapter
                 } else {
-                    Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                    Log.e("TvDetailFragment", "Error: ${response.errorBody()?.string()}")
                 }
             }
 
             override fun onFailure(call: retrofit2.Call<CastResponse>, t: Throwable) {
-                Log.e("DetailFragment", "Error: ${t.message}")
+                Log.e("TvDetailFragment", "Error: ${t.message}")
             }
         })
     }
 
 
 
-    private fun initializeCurrentMovieVideos(movieId: Int) {
+    private fun initializeCurrentTvShowVideos(tvShowId: Int) {
         lifecycleScope.launch {
             try {
-                val call = VideoClient.getInstance().videoService.getMovieVideos(movieId, Constants.API_KEY)
+                val call = VideoClient.getInstance().videoService.getTvShowVideos(tvShowId, Constants.API_KEY)
                 call.enqueue(object : Callback<VideoResponse> {
                     override fun onResponse(call: Call<VideoResponse>, response: Response<VideoResponse>) {
                         if (response.isSuccessful) {
-                            currentMovieVideos = response.body()?.results?.filter { it.site == "YouTube" } ?: emptyList()
+                            currentTvShowVideos = response.body()?.results?.filter { it.site == "YouTube" } ?: emptyList()
                         } else {
-                            Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                            Log.e("TvDetailFragment", "Error: ${response.errorBody()?.string()}")
                         }
                     }
 
                     override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
-                        Log.e("DetailFragment", "Error: ${t.message}")
+                        Log.e("TvDetailFragment", "Error: ${t.message}")
                     }
                 })
             } catch (e: Exception) {
@@ -253,13 +252,13 @@ class DetailFragment : Fragment() {
     }
 
     private fun showVideoOptionsDialog() {
-        if (::currentMovieVideos.isInitialized && currentMovieVideos.isNotEmpty()) {
-            val videoTitles = currentMovieVideos.map { it.name }.toTypedArray()
+        if (::currentTvShowVideos.isInitialized && currentTvShowVideos.isNotEmpty()) {
+            val videoTitles = currentTvShowVideos.map { it.name }.toTypedArray()
 
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Select a Video")
                 .setItems(videoTitles) { _, which ->
-                    val selectedVideo = currentMovieVideos[which]
+                    val selectedVideo = currentTvShowVideos[which]
                     val dialogFragment = VideoPlayerDialogFragment(selectedVideo.key)
                     dialogFragment.show(parentFragmentManager, "videoPlayerDialog")
                 }
@@ -316,8 +315,8 @@ class DetailFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): DetailFragment {
-            return DetailFragment()
+        fun newInstance(): TvDetailFragment {
+            return TvDetailFragment()
         }
     }
 }

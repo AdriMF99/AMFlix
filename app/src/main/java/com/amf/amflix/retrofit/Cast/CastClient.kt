@@ -42,4 +42,7 @@ class CastClient private constructor() {
     fun getMovieCast(movieId: Int): retrofit2.Call<CastResponse> {
         return castService.getMovieCredits(movieId)
     }
+    fun getTvShowCast(movieId: Int): retrofit2.Call<CastResponse> {
+        return castService.getSeriesCredits(movieId)
+    }
 }

@@ -34,6 +34,11 @@
         tools:layout="@layout/fragment_detail" />
 
     <fragment
+        android:id="@+id/navigation_tvdetails"
+        android:name="com.amf.amflix.ui.series.TvDetailFragment"
+        tools:layout="@layout/fragment_tv_detail" />
+
+    <fragment
         android:id="@+id/navigation_login"
         android:name="com.amf.amflix.ui.signin.LoginFragment"
         tools:layout="@layout/fragment_login" />

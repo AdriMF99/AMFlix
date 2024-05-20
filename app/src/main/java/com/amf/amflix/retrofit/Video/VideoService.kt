@@ -9,4 +9,7 @@ import retrofit2.http.Query
 interface VideoService {
     @GET("movie/{movie_id}/videos")
     fun getMovieVideos(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String): Call<VideoResponse>
+
+    @GET("tv/{movie_id}/videos")
+    fun getTvShowVideos(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String): Call<VideoResponse>
 }

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1C1B1C">
@@ -53,7 +52,7 @@
                     app:cardElevation="15dp">
 
                     <com.github.chrisbanes.photoview.PhotoView
-                        android:id="@+id/movieThumbnail"
+                        android:id="@+id/tvThumbnail"
                         android:layout_width="100dp"
                         android:layout_height="150dp"
                         android:adjustViewBounds="true"
@@ -76,7 +75,7 @@
             </FrameLayout>
 
             <LinearLayout
-                android:id="@+id/movieDetailsContainer"
+                android:id="@+id/tvDetailsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -89,7 +88,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/movieTitle"
+                        android:id="@+id/tvTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_bold"
@@ -99,7 +98,7 @@
                         android:textSize="24sp" />
                 </LinearLayout>
 
-                <!-- Generos -->
+                <!-- Géneros -->
                 <LinearLayout
                     android:id="@+id/genresContainer"
                     android:layout_width="wrap_content"
@@ -117,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
-                        android:text="Original Title : "
+                        android:text="Nombre Original : "
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -140,12 +139,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
-                        android:text="Release Date : "
+                        android:text="Fecha de Estreno : "
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/movieReleaseDate"
+                        android:id="@+id/tvReleaseDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_medium"
@@ -163,12 +162,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
-                        android:text="Rating : "
+                        android:text="Puntuación : "
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/movieRating"
+                        android:id="@+id/tvRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_medium"
@@ -193,12 +192,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
-                        android:text="Popularity Score : "
+                        android:text="Puntuación de Popularidad : "
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/moviePopularity"
+                        android:id="@+id/tvPopularity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_medium"
@@ -215,12 +214,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
-                        android:text="TOTAL VOTE : "
+                        android:text="Total de Votos : "
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/movieVoteCount"
+                        android:id="@+id/tvVoteCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_medium"
@@ -236,7 +235,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/taglineMovie"
+                        android:id="@+id/taglinetv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -256,7 +255,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/movieOverview"
+                        android:id="@+id/tvOverview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
@@ -266,7 +265,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cast_list"
+                    android:id="@+id/tvcast_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -278,3 +277,4 @@
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+

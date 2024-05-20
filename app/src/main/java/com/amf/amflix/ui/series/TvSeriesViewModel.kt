@@ -6,16 +6,25 @@ import com.amf.amflix.repository.series.TVSeriesRepository
 import com.amf.amflix.retrofit.models.series.TVSeries
 
 class TvSeriesViewModel: ViewModel() {
-    private var tvSeriesRepository: TVSeriesRepository
-    private var topTVSeries: LiveData<List<TVSeries>>
+
+    private var _series: MutableList<TVSeries> = mutableListOf()
+    private var _selected:TVSeries?=null
+
+    val series:List<TVSeries>
+        get() = _series.toList()
+    var selected:TVSeries?
+        get()=_selected
+        set(item){ _selected=item}
+
+    private var seriesRepository: TVSeriesRepository
+    private var popularSeries: LiveData<List<TVSeries>>
 
     init {
-        tvSeriesRepository = TVSeriesRepository()
-        topTVSeries = tvSeriesRepository?.topTVSeries()!!
+        seriesRepository = TVSeriesRepository()
+        popularSeries = seriesRepository?.popularSeries()!!
     }
 
-    fun getTopTVSeries(): LiveData<List<TVSeries>>{
-        return topTVSeries
+    fun getPopularSeries(): LiveData<List<TVSeries>>{
+        return popularSeries
     }
-
 }

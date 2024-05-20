@@ -1,14 +1,14 @@
 package com.amf.amflix.retrofit.series
 
 import com.amf.amflix.common.Constants
+import com.amf.amflix.retrofit.models.series.TVSeries
 import com.amf.amflix.retrofit.models.series.TVSeriesInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class TVSeriesClient {
-    private val tvSeriesService: TVSeriesService
+    private val seriesService: TVSeriesService
     private val retrofit: Retrofit
 
     companion object{
@@ -21,6 +21,12 @@ class TVSeriesClient {
             }
     }
 
+    fun getInstance(): TVSeriesClient {
+        return TVSeriesClient.instance ?: synchronized(this) {
+            TVSeriesClient.instance ?: TVSeriesClient().also { TVSeriesClient.instance = it }
+        }
+    }
+
     init {
         val okHttpClientBuilder = OkHttpClient.Builder()
         okHttpClientBuilder.addInterceptor(TVSeriesInterceptor())
@@ -30,12 +36,15 @@ class TVSeriesClient {
         retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client((client))
+            .client(client)
             .build()
 
-        tvSeriesService = retrofit.create(TVSeriesService::class.java)
+        seriesService = retrofit.create(TVSeriesService::class.java)
     }
 
-    fun getTVSeriesService() = tvSeriesService
+    fun getSeriesService() = seriesService
+    fun getTvShowDetails(seriesId: Int): retrofit2.Call<TVSeries> {
+        return seriesService.getTvShowDetails(seriesId)
+    }
 
 }

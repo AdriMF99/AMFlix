@@ -12,38 +12,43 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TVSeriesRepository {
-    var tvSeriesService: TVSeriesService? = null
-    var tvSeriesClient: TVSeriesClient? = null
-    var topTVSeries: MutableLiveData<List<TVSeries>> ?= null
 
+    var seriesService: TVSeriesService? = null
+    var seriesClient: TVSeriesClient?= null
+
+    var popularSeries: MutableLiveData<List<TVSeries>> ?= null
+
+    // Inicialización de propiedades
     init {
-        tvSeriesClient = TVSeriesClient.instance
-        tvSeriesService = tvSeriesClient?.getTVSeriesService()
-        topTVSeries = topTVSeries()
+        seriesClient = TVSeriesClient.instance
+        seriesService = seriesClient?.getSeriesService()
+        popularSeries = popularSeries()
     }
 
-    fun topTVSeries(): MutableLiveData<List<TVSeries>>?{
-        if (topTVSeries == null){
-            topTVSeries = MutableLiveData<List<TVSeries>>()
+    fun popularSeries(): MutableLiveData<List<TVSeries>>?{
+        if (popularSeries == null){
+            popularSeries = MutableLiveData<List<TVSeries>>()
         }
-        val call: Call<TopTVSeriesResponse>? = tvSeriesService?.getTopTVSeries()
+        // Obtiene las películas populares de la API
+        val call: Call<TopTVSeriesResponse>? = seriesService?.getTopTVSeries()
         call?.enqueue(object : Callback<TopTVSeriesResponse>{
             override fun onResponse(
                 call: Call<TopTVSeriesResponse>,
                 response: Response<TopTVSeriesResponse>
             ) {
-                if (response.isSuccessful){
-                    topTVSeries?.value = response.body()?.results
+                if (response.isSuccessful) {
+                    // Actualiza el objeto popularSeries con los resultados
+                    popularSeries?.value = response.body()?.results
                 }
             }
 
             override fun onFailure(call: Call<TopTVSeriesResponse>, t: Throwable) {
+                // Muestra un mensaje de Toast en caso de que la solicitud falle
                 Toast.makeText(App.instance, "Something went wrong, please check your internet connection", Toast.LENGTH_LONG).show()
             }
 
         })
 
-        return topTVSeries
+        return popularSeries
     }
-
 }

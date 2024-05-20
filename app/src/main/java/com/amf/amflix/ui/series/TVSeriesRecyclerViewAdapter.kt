@@ -13,11 +13,13 @@ import coil.load
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.databinding.FragmentTvSeriesItemBinding
+import com.amf.amflix.retrofit.models.movies.Movie
 import com.amf.amflix.retrofit.models.series.TVSeries
 
-class TVSeriesRecyclerViewAdapter() : RecyclerView.Adapter<TVSeriesRecyclerViewAdapter.ViewHolder>() {
+class TVSeriesRecyclerViewAdapter(private val values: List<TVSeries>) : RecyclerView.Adapter<TVSeriesRecyclerViewAdapter.ViewHolder>() {
 
     private var tvSeries: List<TVSeries> = ArrayList()
+    var click: ((Int, TVSeries) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
@@ -38,6 +40,7 @@ class TVSeriesRecyclerViewAdapter() : RecyclerView.Adapter<TVSeriesRecyclerViewA
         holder.tvSynopsis.text = item.overview
         holder.tvRelease.text = item.first_air_date
         holder.tvRating.text = item.vote_average.toString()
+
         holder.ivPoster.load(Constants.IMAGE_ORIGINAL_BASE_URL + item.backdrop_path){
             crossfade(true)
             placeholder(R.drawable.placeholder_load)
@@ -50,14 +53,16 @@ class TVSeriesRecyclerViewAdapter() : RecyclerView.Adapter<TVSeriesRecyclerViewA
             crossfade(true)
             placeholder(R.drawable.placeholder_load)
         }
-        //val blur = RenderEffect.createBlurEffect(50F, 50F, Shader.TileMode.CLAMP)
-        //holder.ivBackdrop.setRenderEffect(blur)
 
+        // Configura el listener para el clic
+        holder.itemView.setOnClickListener {
+            click?.invoke(position, item)
+        }
     }
 
     override fun getItemCount(): Int = tvSeries.size
     fun setData(topTVSeries: List<TVSeries>?){
-        tvSeries = topTVSeries!!
+        tvSeries = topTVSeries ?: listOf()
         notifyDataSetChanged()
     }
 

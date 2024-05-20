@@ -1,8 +1,6 @@
 package com.amf.amflix.retrofit.movies
 
 import com.amf.amflix.common.Constants
-import com.amf.amflix.retrofit.Cast.CastClient
-import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.movies.Movie
 import com.amf.amflix.retrofit.models.movies.MovieInterceptor
 import okhttp3.OkHttpClient
@@ -49,5 +47,4 @@ class MovieClient {
     fun getMovieDetails(movieId: Int): retrofit2.Call<Movie> {
         return movieService.getMovieDetails(movieId)
     }
-
 }
