@@ -12,8 +12,11 @@ interface MovieService {
     @GET("movie/popular")
     fun getPopularMovies(): retrofit2.Call<PopularMoviesResponse>
 
-    @GET("movie/{movie_id}/credits")
-    fun getMovieCredits(@Path("movie_id") movieId: Int, ) : retrofit2.Call<CastResponse>
+    @GET("movie/top_rated")
+    fun getTopRatedMovies(): retrofit2.Call<PopularMoviesResponse>
+
+    @GET("trending/movie/week")
+    fun getTrendingMovies(): retrofit2.Call<PopularMoviesResponse>
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId: Int): retrofit2.Call<Movie>

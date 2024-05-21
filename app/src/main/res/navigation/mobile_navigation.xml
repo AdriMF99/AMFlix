@@ -47,4 +47,11 @@
         android:id="@+id/navigation_register"
         android:name="com.amf.amflix.ui.signin.RegisterFragment"
         tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.amf.amflix.ui.Home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+
 </navigation>

@@ -10,6 +10,15 @@ interface TVSeriesService {
     @GET("tv/popular")
     fun getTopTVSeries(): retrofit2.Call<TopTVSeriesResponse>
 
+    @GET("tv/popular")
+    fun getPopularSeries(): retrofit2.Call<TopTVSeriesResponse>
+
+    @GET("tv/top_rated")
+    fun getTopRatedSeries(): retrofit2.Call<TopTVSeriesResponse>
+
+    @GET("trending/tv/week")
+    fun getTrendingSeries(): retrofit2.Call<TopTVSeriesResponse>
+
     @GET("tv/{series_id}")
     fun getTvShowDetails(@Path("series_id") seriesId: Int): retrofit2.Call<TVSeries>
 }

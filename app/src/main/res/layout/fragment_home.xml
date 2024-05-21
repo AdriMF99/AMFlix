@@ -1,0 +1,105 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/window_background"
+    android:layout_height="match_parent"
+    tools:context=".ui.Home.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Popular Movies"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popular_movies_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Top Rated Movies"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_rated_movies_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Trending Movies"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trending_movies_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Popular TV Shows"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popular_tv_shows_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Top Rated TV Shows"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_rated_tv_shows_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Trending TV Shows"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trending_tv_shows_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
+    </LinearLayout>
+</ScrollView>

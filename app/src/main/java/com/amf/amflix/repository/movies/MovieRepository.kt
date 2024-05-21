@@ -1,6 +1,7 @@
 package com.amf.amflix.repository.movies
 
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.amf.amflix.common.App
 import com.amf.amflix.retrofit.models.movies.Movie
@@ -50,5 +51,62 @@ class MovieRepository {
         })
 
         return popularMovies
+    }
+
+    fun getPopularMovies(): LiveData<List<Movie>> {
+        val popularMovies = MutableLiveData<List<Movie>>()
+
+        val call: Call<PopularMoviesResponse>? = movieService?.getPopularMovies()
+        call?.enqueue(object : Callback<PopularMoviesResponse> {
+            override fun onResponse(call: Call<PopularMoviesResponse>, response: Response<PopularMoviesResponse>) {
+                if (response.isSuccessful) {
+                    popularMovies.value = response.body()?.results
+                }
+            }
+
+            override fun onFailure(call: Call<PopularMoviesResponse>, t: Throwable) {
+                Toast.makeText(App.instance, "Something went wrong, please check your internet connection", Toast.LENGTH_LONG).show()
+            }
+        })
+
+        return popularMovies
+    }
+
+    fun getTopRatedMovies(): LiveData<List<Movie>> {
+        val topRatedMovies = MutableLiveData<List<Movie>>()
+
+        val call: Call<PopularMoviesResponse>? = movieService?.getTopRatedMovies()
+        call?.enqueue(object : Callback<PopularMoviesResponse> {
+            override fun onResponse(call: Call<PopularMoviesResponse>, response: Response<PopularMoviesResponse>) {
+                if (response.isSuccessful) {
+                    topRatedMovies.value = response.body()?.results
+                }
+            }
+
+            override fun onFailure(call: Call<PopularMoviesResponse>, t: Throwable) {
+                Toast.makeText(App.instance, "Something went wrong, please check your internet connection", Toast.LENGTH_LONG).show()
+            }
+        })
+
+        return topRatedMovies
+    }
+
+    fun getTrendingMovies(): LiveData<List<Movie>> {
+        val trendingMovies = MutableLiveData<List<Movie>>()
+
+        val call: Call<PopularMoviesResponse>? = movieService?.getTrendingMovies()
+        call?.enqueue(object : Callback<PopularMoviesResponse> {
+            override fun onResponse(call: Call<PopularMoviesResponse>, response: Response<PopularMoviesResponse>) {
+                if (response.isSuccessful) {
+                    trendingMovies.value = response.body()?.results
+                }
+            }
+
+            override fun onFailure(call: Call<PopularMoviesResponse>, t: Throwable) {
+                Toast.makeText(App.instance, "Something went wrong, please check your internet connection", Toast.LENGTH_LONG).show()
+            }
+        })
+
+        return trendingMovies
     }
 }

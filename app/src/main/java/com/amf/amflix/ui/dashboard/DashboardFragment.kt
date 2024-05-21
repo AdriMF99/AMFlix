@@ -54,6 +54,12 @@ class DashboardFragment : Fragment() {
             navController.navigate(R.id.navigation_login)
         }
 
+        cardView3.setOnClickListener {
+                Toast.makeText(requireContext(), "Home", Toast.LENGTH_SHORT).show()
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_home)
+        }
+
         binding.txtUserLog.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             Toast.makeText(requireContext(), "Sesión cerrada!", Toast.LENGTH_SHORT).show()
