@@ -31,6 +31,7 @@ import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
 import com.amf.amflix.retrofit.models.movies.Movie
 import com.amf.amflix.retrofit.movies.MovieClient
+import com.amf.amflix.ui.Video.VideoDialogFragment
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
@@ -91,6 +92,7 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateUI()
+        initializeCurrentMovieVideos(movieviewmodel.selected?.id ?: return)
     }
 
     override fun onDestroyView() {
@@ -122,7 +124,11 @@ class DetailFragment : Fragment() {
         }
 
         playTrailerButton.setOnClickListener {
-            showVideoOptionsDialog()
+            if (::currentMovieVideos.isInitialized && currentMovieVideos.isNotEmpty()) {
+                showVideoOptionsDialog()
+            } else {
+                Toast.makeText(requireContext(), "No videos available :(", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -237,6 +243,7 @@ class DetailFragment : Fragment() {
                     override fun onResponse(call: Call<VideoResponse>, response: Response<VideoResponse>) {
                         if (response.isSuccessful) {
                             currentMovieVideos = response.body()?.results?.filter { it.site == "YouTube" } ?: emptyList()
+                            Log.d("DetailFragment", "Videos: $currentMovieVideos") // Agrega esto para depurar
                         } else {
                             Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
                         }
@@ -254,19 +261,12 @@ class DetailFragment : Fragment() {
 
     private fun showVideoOptionsDialog() {
         if (::currentMovieVideos.isInitialized && currentMovieVideos.isNotEmpty()) {
-            val videoTitles = currentMovieVideos.map { it.name }.toTypedArray()
-
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Select a Video")
-                .setItems(videoTitles) { _, which ->
-                    val selectedVideo = currentMovieVideos[which]
-                    val dialogFragment = VideoPlayerDialogFragment(selectedVideo.key)
-                    dialogFragment.show(parentFragmentManager, "videoPlayerDialog")
-                }
-            val dialog = builder.create()
-            dialog.show()
+            // Muestra el diálogo de selección de videos
+            val dialogFragment = VideoDialogFragment(currentMovieVideos)
+            dialogFragment.show(parentFragmentManager, "videoDialog")
         } else {
             Toast.makeText(requireContext(), "No videos available :(", Toast.LENGTH_SHORT).show()
+            Log.e("DetailFragment", "No videos available")
         }
     }
 

@@ -19,7 +19,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
     private val movieViewModel: MovieViewModel by activityViewModels()
+    private val movieviewmodel: com.amf.amflix.ui.movies.MovieViewModel by activityViewModels()
     private val tvSeriesViewModel: TvSeriesViewModel by activityViewModels()
+    private val tvseriesviewmodel: com.amf.amflix.ui.series.TvSeriesViewModel by activityViewModels()
 
     private lateinit var popularMoviesRecyclerView: RecyclerView
     private lateinit var topRatedMoviesRecyclerView: RecyclerView
@@ -41,7 +43,7 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         initializeViews(view)
-        hideBottomNavigation()
+        showBottomNavigation()
         return view
     }
 
@@ -52,7 +54,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        showBottomNavigation()
+        hideBottomNavigation()
     }
 
     private fun initializeViews(view: View) {
@@ -116,12 +118,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToMovieDetail(movie: Movie) {
-        movieViewModel.selectedMovie = movie
+        movieviewmodel.selected = movie
         findNavController().navigate(R.id.navigation_details)
     }
 
     private fun navigateToTvShowDetail(tvShow: TVSeries) {
-        tvSeriesViewModel.selectedTvShow = tvShow
+        tvseriesviewmodel.selected = tvShow
         findNavController().navigate(R.id.navigation_tvdetails)
     }
 

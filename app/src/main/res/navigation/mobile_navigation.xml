@@ -6,6 +6,11 @@
     app:startDestination="@id/navigation_dashboard">
 
     <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.amf.amflix.ui.Home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.amf.amflix.ui.dashboard.DashboardFragment"
         android:label="Dashboard"
@@ -47,11 +52,6 @@
         android:id="@+id/navigation_register"
         android:name="com.amf.amflix.ui.signin.RegisterFragment"
         tools:layout="@layout/fragment_register" />
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.amf.amflix.ui.Home.HomeFragment"
-        tools:layout="@layout/fragment_home" />
 
 
 </navigation>

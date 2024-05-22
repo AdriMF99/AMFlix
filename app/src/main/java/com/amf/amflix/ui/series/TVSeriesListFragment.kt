@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.amf.amflix.R
 import com.amf.amflix.retrofit.models.series.TVSeries
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class TVSeriesListFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class TVSeriesListFragment : Fragment() {
     private val seriesviewmodel: TvSeriesViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        showBottomNavigation()
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
@@ -82,5 +84,10 @@ class TVSeriesListFragment : Fragment() {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
+    }
+
+    private fun showBottomNavigation() {
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 }

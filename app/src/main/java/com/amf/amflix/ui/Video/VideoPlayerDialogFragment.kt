@@ -17,22 +17,15 @@ class VideoPlayerDialogFragment(private val videoKey: String) : DialogFragment()
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_video_player_dialog, container, false)
+        val youtubePlayerView: YouTubePlayerView = view.findViewById(R.id.youtube_player_view)
 
-        val youTubePlayerView: YouTubePlayerView = view.findViewById(R.id.youtube_player_view)
-        lifecycle.addObserver(youTubePlayerView)
-
-        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+        lifecycle.addObserver(youtubePlayerView)
+        youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 youTubePlayer.loadVideo(videoKey, 0f)
             }
         })
 
         return view
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        val youTubePlayerView: YouTubePlayerView? = view?.findViewById(R.id.youtube_player_view)
-        youTubePlayerView?.release()
     }
 }
