@@ -30,6 +30,7 @@ import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
 import com.amf.amflix.retrofit.models.series.TVSeries
 import com.amf.amflix.retrofit.series.TVSeriesClient
+import com.amf.amflix.ui.Video.VideoDialogFragment
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.amf.amflix.ui.movies.CastAdapter
 import com.bumptech.glide.Glide
@@ -253,19 +254,12 @@ class TvDetailFragment : Fragment() {
 
     private fun showVideoOptionsDialog() {
         if (::currentTvShowVideos.isInitialized && currentTvShowVideos.isNotEmpty()) {
-            val videoTitles = currentTvShowVideos.map { it.name }.toTypedArray()
-
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Select a Video")
-                .setItems(videoTitles) { _, which ->
-                    val selectedVideo = currentTvShowVideos[which]
-                    val dialogFragment = VideoPlayerDialogFragment(selectedVideo.key)
-                    dialogFragment.show(parentFragmentManager, "videoPlayerDialog")
-                }
-            val dialog = builder.create()
-            dialog.show()
+            // Muestra el diálogo de selección de videos
+            val dialogFragment = VideoDialogFragment(currentTvShowVideos)
+            dialogFragment.show(parentFragmentManager, "videoDialog")
         } else {
             Toast.makeText(requireContext(), "No videos available :(", Toast.LENGTH_SHORT).show()
+            Log.e("DetailFragment", "No videos available")
         }
     }
 
