@@ -53,5 +53,9 @@
         android:name="com.amf.amflix.ui.signin.RegisterFragment"
         tools:layout="@layout/fragment_register" />
 
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.amf.amflix.ui.Search.SearchFragment"
+        tools:layout="@layout/fragment_search" />
 
 </navigation>

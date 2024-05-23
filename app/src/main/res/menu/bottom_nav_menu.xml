@@ -9,7 +9,7 @@
         android:title="" />
 
     <item
-        android:id="@+id/navigation_series"
+        android:id="@+id/navigation_search"
         android:icon="@drawable/ic_round_tv_24"
         android:enabled="true"
         android:title="" />
