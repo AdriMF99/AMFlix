@@ -9,8 +9,8 @@
 
     <gradient
         android:angle="45"
-        android:startColor="@color/md_theme_light_primary"
-        android:endColor="@color/md_theme_light_tertiaryContainer"
+        android:startColor="#FFEB3B"
+        android:endColor="#CDDC39"
         android:type="linear"/>
 
     <corners

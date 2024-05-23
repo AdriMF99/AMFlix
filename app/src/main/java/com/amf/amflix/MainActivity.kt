@@ -31,9 +31,10 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.navigation_home)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_dashboard,
+                R.id.navigation_home,
                 R.id.navigation_series,
                 R.id.navigation_people
             )
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navView.setOnNavigationItemSelectedListener { item ->
+        /*navView.setOnNavigationItemSelectedListener { item ->
             // Manejar la selección de elementos del menú
             when (item.itemId) {
                 R.id.navigation_dashboard -> {
@@ -56,10 +57,22 @@ class MainActivity : AppCompatActivity() {
                     item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
                 }
             }
-        }
+        }*/
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val dest = navController.currentDestination?.id
+
+        if (dest == R.id.navigation_home || dest == R.id.navigation_series || dest == R.id.navigation_people) {
+
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 }

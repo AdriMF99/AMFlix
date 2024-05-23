@@ -15,7 +15,7 @@ interface MovieService {
     @GET("movie/top_rated")
     fun getTopRatedMovies(): retrofit2.Call<PopularMoviesResponse>
 
-    @GET("trending/movie/week")
+    @GET("trending/movie/day")
     fun getTrendingMovies(): retrofit2.Call<PopularMoviesResponse>
 
     @GET("movie/{movie_id}")

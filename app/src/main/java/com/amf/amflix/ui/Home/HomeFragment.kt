@@ -54,7 +54,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        hideBottomNavigation()
     }
 
     private fun initializeViews(view: View) {
@@ -129,11 +128,13 @@ class HomeFragment : Fragment() {
 
     private fun hideBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.clearAnimation() // Detener la animación
         bottomNavigationView.visibility = View.GONE
     }
 
     private fun showBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.clearAnimation() // Detener la animación
         bottomNavigationView.visibility = View.VISIBLE
     }
 

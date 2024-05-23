@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -24,8 +25,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
+import com.amf.amflix.retrofit.Crew.CrewClient
 import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
+import com.amf.amflix.retrofit.models.Crew.CrewResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
 import com.amf.amflix.retrofit.models.series.TVSeries
@@ -33,6 +36,7 @@ import com.amf.amflix.retrofit.series.TVSeriesClient
 import com.amf.amflix.ui.Video.VideoDialogFragment
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.amf.amflix.ui.movies.CastAdapter
+import com.amf.amflix.ui.movies.CrewAdapter
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -47,6 +51,8 @@ class TvDetailFragment : Fragment() {
     private lateinit var v: View
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var castAdapter: CastAdapter
+    private lateinit var tvcrewRecyclerView: RecyclerView
+    private lateinit var tvcrewAdapter: CrewAdapter
     private lateinit var tvTitle: TextView
     private lateinit var originalTitle: TextView
     private lateinit var tvReleaseDate: TextView
@@ -61,6 +67,7 @@ class TvDetailFragment : Fragment() {
     private lateinit var playTrailerButton: FloatingActionButton
     private lateinit var genresContainer: LinearLayout
     private lateinit var tag: TextView
+    private lateinit var ratingBar: RatingBar
 
     var tvShowClient: TVSeriesClient?= null
 
@@ -110,12 +117,15 @@ class TvDetailFragment : Fragment() {
         tvPoster = v.findViewById(R.id.tvThumbnail)
         flecha = v.findViewById(R.id.backarrow)
         castRecyclerView = v.findViewById(R.id.tvcast_list)
+        tvcrewRecyclerView = v.findViewById(R.id.tvcrew_list)
         backdrop = v.findViewById(R.id.backgroundImage)
         castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        tvcrewRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         playTrailerButton = v.findViewById(R.id.playTrailerButton)
         genresContainer = v.findViewById(R.id.genresContainer)
         tag = v.findViewById(R.id.taglinetv)
         tvShowClient = TVSeriesClient.instance
+        ratingBar = v.findViewById(R.id.ratingBar)
 
         // OnClickListener para cambiar el tamaño de la imagen
         tvPoster.setOnClickListener {
@@ -137,6 +147,8 @@ class TvDetailFragment : Fragment() {
         tvPopularity.text = tvShow.popularity.toString()
         tvVoteCount.text = tvShow.vote_count.toString()
         tvOverview.text = tvShow.overview
+        val movieRating = tvShow.vote_average / 2
+        ratingBar.rating = movieRating.toFloat()
 
         Glide.with(this)
             .load(Constants.IMAGE_BASE_URL + tvShow.poster_path)
@@ -204,6 +216,7 @@ class TvDetailFragment : Fragment() {
 
 
         loadCast(tvShow.id)
+        loadCrew(tvShow.id)
         initializeCurrentTvShowVideos(tvShow.id)
     }
 
@@ -227,7 +240,24 @@ class TvDetailFragment : Fragment() {
         })
     }
 
+    private fun loadCrew(movieId: Int) {
+        val call = CrewClient.getInstance().getTvShowCrew(movieId)
+        call.enqueue(object : retrofit2.Callback<CrewResponse> {
+            override fun onResponse(call: retrofit2.Call<CrewResponse>, response: retrofit2.Response<CrewResponse>) {
+                if (response.isSuccessful) {
+                    val crewList = response.body()?.crew ?: emptyList()
+                    tvcrewAdapter = CrewAdapter(crewList)
+                    tvcrewRecyclerView.adapter = tvcrewAdapter
+                } else {
+                    Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                }
+            }
 
+            override fun onFailure(call: retrofit2.Call<CrewResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
 
     private fun initializeCurrentTvShowVideos(tvShowId: Int) {
         lifecycleScope.launch {

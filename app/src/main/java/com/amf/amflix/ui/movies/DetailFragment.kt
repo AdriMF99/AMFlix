@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -25,8 +26,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
+import com.amf.amflix.retrofit.Crew.CrewClient
 import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
+import com.amf.amflix.retrofit.models.Crew.CrewResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
 import com.amf.amflix.retrofit.models.movies.Movie
@@ -48,6 +51,8 @@ class DetailFragment : Fragment() {
     private lateinit var v: View
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var castAdapter: CastAdapter
+    private lateinit var crewRecyclerView: RecyclerView
+    private lateinit var crewAdapter: CrewAdapter
     private lateinit var movieTitle: TextView
     private lateinit var originalTitle: TextView
     private lateinit var movieReleaseDate: TextView
@@ -62,6 +67,7 @@ class DetailFragment : Fragment() {
     private lateinit var playTrailerButton: FloatingActionButton
     private lateinit var genresContainer: LinearLayout
     private lateinit var tag: TextView
+    private lateinit var ratingBar: RatingBar
 
     var movieClient: MovieClient?= null
 
@@ -111,12 +117,15 @@ class DetailFragment : Fragment() {
         moviePoster = v.findViewById(R.id.movieThumbnail)
         flecha = v.findViewById(R.id.backarrow)
         castRecyclerView = v.findViewById(R.id.cast_list)
+        crewRecyclerView = v.findViewById(R.id.crew_list)
         backdrop = v.findViewById(R.id.backgroundImage)
         castRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        crewRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         playTrailerButton = v.findViewById(R.id.playTrailerButton)
         genresContainer = v.findViewById(R.id.genresContainer)
         tag = v.findViewById(R.id.taglineMovie)
         movieClient = MovieClient.instance
+        ratingBar = v.findViewById(R.id.ratingBar)
 
         // OnClickListener para cambiar el tamaño de la imagen
         moviePoster.setOnClickListener {
@@ -142,6 +151,8 @@ class DetailFragment : Fragment() {
         moviePopularity.text = movie.popularity.toString()
         movieVoteCount.text = movie.vote_count.toString()
         movieOverview.text = movie.overview
+        val movieRating = movie.vote_average / 2.0f
+        ratingBar.rating = movieRating.toFloat()
 
         // Carga la imagen de la portada utilizando Glide
         Glide.with(this)
@@ -210,6 +221,7 @@ class DetailFragment : Fragment() {
 
 
         loadCast(movie.id)
+        loadCrew(movie.id)
         initializeCurrentMovieVideos(movie.id)
     }
 
@@ -233,7 +245,24 @@ class DetailFragment : Fragment() {
         })
     }
 
+    private fun loadCrew(movieId: Int) {
+        val call = CrewClient.getInstance().getMovieCrew(movieId)
+        call.enqueue(object : retrofit2.Callback<CrewResponse> {
+            override fun onResponse(call: retrofit2.Call<CrewResponse>, response: retrofit2.Response<CrewResponse>) {
+                if (response.isSuccessful) {
+                    val crewList = response.body()?.crew ?: emptyList()
+                    crewAdapter = CrewAdapter(crewList)
+                    crewRecyclerView.adapter = crewAdapter
+                } else {
+                    Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                }
+            }
 
+            override fun onFailure(call: retrofit2.Call<CrewResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
 
     private fun initializeCurrentMovieVideos(movieId: Int) {
         lifecycleScope.launch {

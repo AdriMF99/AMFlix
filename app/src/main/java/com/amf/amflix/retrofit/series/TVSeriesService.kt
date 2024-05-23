@@ -16,7 +16,7 @@ interface TVSeriesService {
     @GET("tv/top_rated")
     fun getTopRatedSeries(): retrofit2.Call<TopTVSeriesResponse>
 
-    @GET("trending/tv/week")
+    @GET("trending/tv/day")
     fun getTrendingSeries(): retrofit2.Call<TopTVSeriesResponse>
 
     @GET("tv/{series_id}")
