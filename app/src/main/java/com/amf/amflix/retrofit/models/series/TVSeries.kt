@@ -7,6 +7,7 @@ data class TVSeries(
     val first_air_date: String,
     val genres: List<Genre>?,
     val id: Int,
+    val media_type: String?,
     val name: String,
     val origin_country: List<String>,
     val original_language: String,

@@ -8,24 +8,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
-import com.amf.amflix.retrofit.models.movies.Movie
+import com.amf.amflix.retrofit.models.series.TVSeries
 import com.bumptech.glide.Glide
 
-class SearchAdapter(private val onClick: (Movie) -> Unit) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+class SearchAdaptertv(private val onClick: (TVSeries) -> Unit) : RecyclerView.Adapter<SearchAdaptertv.SearchtvViewHolder>() {
 
-    private var itemList: List<Movie> = listOf()
+    private var itemList: List<TVSeries> = listOf()
 
-    fun setItems(items: List<Movie>) {
+    fun setItems(items: List<TVSeries>) {
         itemList = items
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchtvViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-        return SearchViewHolder(view, onClick)
+        return SearchtvViewHolder(view, onClick)
     }
 
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchtvViewHolder, position: Int) {
         holder.bind(itemList[position])
     }
 
@@ -33,12 +33,12 @@ class SearchAdapter(private val onClick: (Movie) -> Unit) : RecyclerView.Adapter
         return itemList.size
     }
 
-    class SearchViewHolder(itemView: View, private val onClick: (Movie) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class SearchtvViewHolder(itemView: View, private val onClick: (TVSeries) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.movie_title)
         private val poster: ImageView = itemView.findViewById(R.id.movie_poster)
 
-        fun bind(movieOrSeries: Movie) {
-                title.text = movieOrSeries.title
+        fun bind(movieOrSeries: TVSeries) {
+                title.text = movieOrSeries.name
 
             Glide.with(itemView.context)
                 .load(Constants.IMAGE_BASE_URL + movieOrSeries.poster_path)
