@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
@@ -64,7 +65,7 @@ class TvDetailFragment : Fragment() {
     private lateinit var backdrop: ImageView
     private lateinit var flecha: ImageButton
     private lateinit var currentTvShowVideos: List<Video>
-    private lateinit var playTrailerButton: FloatingActionButton
+    private lateinit var playTrailerButton: LottieAnimationView
     private lateinit var genresContainer: LinearLayout
     private lateinit var tag: TextView
     private lateinit var ratingBar: RatingBar

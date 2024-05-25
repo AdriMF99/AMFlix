@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,11 +32,10 @@
             android:queryHint="Search movies or series"
             android:queryBackground="@android:color/transparent"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/darker_gray"/>
+            android:textColorHint="@android:color/darker_gray" />
 
     </androidx.cardview.widget.CardView>
 
-    <!-- RadioGroup for selecting Movies or Series -->
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="0dp"
@@ -74,6 +74,15 @@
 
     </RadioGroup>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animationload"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -104,4 +104,7 @@ dependencies {
 
     // coil Carga de imagenes
     implementation("io.coil-kt:coil:$coilVersion")
+
+    // animaciones
+    implementation("com.airbnb.android:lottie:3.4.0")
 }
