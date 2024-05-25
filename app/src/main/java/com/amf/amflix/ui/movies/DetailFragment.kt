@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -28,9 +29,11 @@ import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
 import com.amf.amflix.retrofit.Crew.CrewClient
+import com.amf.amflix.retrofit.Review.ReviewClient
 import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.Crew.CrewResponse
+import com.amf.amflix.retrofit.models.Review.ReviewResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
 import com.amf.amflix.retrofit.models.movies.Movie
@@ -69,6 +72,10 @@ class DetailFragment : Fragment() {
     private lateinit var genresContainer: LinearLayout
     private lateinit var tag: TextView
     private lateinit var ratingBar: RatingBar
+    private lateinit var reviewsContainer: LinearLayout
+    private lateinit var showReviewsButton: Button
+    private lateinit var reviewsRecyclerView: RecyclerView
+    private var reviewsVisible = false
 
     var movieClient: MovieClient?= null
 
@@ -101,6 +108,9 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateUI()
         initializeCurrentMovieVideos(movieviewmodel.selected?.id ?: return)
+        showReviewsButton.setOnClickListener {
+            toggleReviewsVisibility()
+        }
     }
 
     override fun onDestroyView() {
@@ -128,6 +138,10 @@ class DetailFragment : Fragment() {
         tag = v.findViewById(R.id.taglineMovie)
         movieClient = MovieClient.instance
         ratingBar = v.findViewById(R.id.ratingBar)
+        reviewsContainer = v.findViewById(R.id.reviewsContainer)
+        showReviewsButton = v.findViewById(R.id.showReviewsButton)
+        reviewsRecyclerView = v.findViewById(R.id.reviewsRecyclerView)
+        reviewsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // OnClickListener para cambiar el tamaño de la imagen
         moviePoster.setOnClickListener {
@@ -224,6 +238,7 @@ class DetailFragment : Fragment() {
 
         loadCast(movie.id)
         loadCrew(movie.id)
+        fetchReviews(movie.id)
         initializeCurrentMovieVideos(movie.id)
     }
 
@@ -266,6 +281,29 @@ class DetailFragment : Fragment() {
         })
     }
 
+    private fun fetchReviews(movieId: Int) {
+        val call = ReviewClient.getInstance().getMovieReviews(movieId, Constants.API_KEY)
+        call.enqueue(object : Callback<ReviewResponse> {
+            override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+                if (response.isSuccessful) {
+                    val reviewList = response.body()?.results ?: emptyList()
+                    val reviewsAdapter = ReviewAdapter(reviewList)
+                    reviewsRecyclerView.adapter = reviewsAdapter
+
+                    if (reviewList.isNotEmpty()) {
+                        showReviewsButton.visibility = View.VISIBLE
+                    }
+                } else {
+                    Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
+
     private fun initializeCurrentMovieVideos(movieId: Int) {
         lifecycleScope.launch {
             try {
@@ -292,7 +330,6 @@ class DetailFragment : Fragment() {
 
     private fun showVideoOptionsDialog() {
         if (::currentMovieVideos.isInitialized && currentMovieVideos.isNotEmpty()) {
-            // Muestra el diálogo de selección de videos
             val dialogFragment = VideoDialogFragment(currentMovieVideos)
             dialogFragment.show(parentFragmentManager, "videoDialog")
         } else {
@@ -334,6 +371,17 @@ class DetailFragment : Fragment() {
     private fun Int.dpToPx(): Int {
         val density = resources.displayMetrics.density
         return (this * density).toInt()
+    }
+
+    private fun toggleReviewsVisibility() {
+        if (reviewsVisible) {
+            reviewsContainer.visibility = View.GONE
+            showReviewsButton.text = "Show Reviews"
+        } else {
+            reviewsContainer.visibility = View.VISIBLE
+            showReviewsButton.text = "Hide Reviews"
+        }
+        reviewsVisible = !reviewsVisible
     }
 
     private fun hideBottomNavigation() {
