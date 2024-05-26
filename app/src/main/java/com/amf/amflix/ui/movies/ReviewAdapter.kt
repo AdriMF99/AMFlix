@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.retrofit.models.Review.Review
@@ -34,10 +35,18 @@ class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<Re
         private val ratingnumber: TextView = itemView.findViewById(R.id.ratingNumber)
 
         fun bind(review: Review) {
-            authorTextView.text = review.author_details.name
+            if (review.author_details.name == null || review.author_details.name == "") {
+                authorTextView.text = review.author_details.username
+            } else {
+                authorTextView.text = review.author_details.name
+            }
+            if (review.author_details.rating  == null) {
+                !ratingnumber.isVisible
+            } else {
+                ratingnumber.text = review.author_details.rating.toString()
+            }
             contentTextView.text = review.content
             ratingBar.rating = review.author_details.rating ?: 0f
-            ratingnumber.text = review.author_details.rating.toString()
 
             val avatarPath = review.author_details.avatar_path?.let {
                 if (it.startsWith("/")) "https://image.tmdb.org/t/p/w500$it" else it

@@ -1,14 +1,21 @@
 package com.amf.amflix.ui.series
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -27,9 +34,11 @@ import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
 import com.amf.amflix.retrofit.Crew.CrewClient
+import com.amf.amflix.retrofit.Review.ReviewClient
 import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.Crew.CrewResponse
+import com.amf.amflix.retrofit.models.Review.ReviewResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
 import com.amf.amflix.retrofit.models.series.TVSeries
@@ -38,6 +47,7 @@ import com.amf.amflix.ui.Video.VideoDialogFragment
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.amf.amflix.ui.movies.CastAdapter
 import com.amf.amflix.ui.movies.CrewAdapter
+import com.amf.amflix.ui.movies.ReviewAdapter
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -69,6 +79,11 @@ class TvDetailFragment : Fragment() {
     private lateinit var genresContainer: LinearLayout
     private lateinit var tag: TextView
     private lateinit var ratingBar: RatingBar
+    private lateinit var showReviewsButton: LottieAnimationView
+    private lateinit var reviewsContainer: LinearLayout
+    private lateinit var reviewsRecyclerView: RecyclerView
+    private lateinit var reviewsOverlay: FrameLayout
+    private var reviewsVisible: Boolean = false
 
     var tvShowClient: TVSeriesClient?= null
 
@@ -85,8 +100,11 @@ class TvDetailFragment : Fragment() {
     ): View? {
         v = inflater.inflate(R.layout.fragment_tv_detail, container, false)
         initializeViews()
+        playTrailerButton.playAnimation()
+        showReviewsButton.playAnimation()
 
         hideBottomNavigation()
+        setupOutsideTouchListener()
 
         flecha.setOnClickListener {
             val navController = findNavController()
@@ -99,8 +117,11 @@ class TvDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateUI()
+        initializeCurrentTvShowVideos(tvShowViewModel.selected?.id ?: return)
+        showReviewsButton.setOnClickListener {
+            toggleReviewsVisibility()
+        }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -127,6 +148,11 @@ class TvDetailFragment : Fragment() {
         tag = v.findViewById(R.id.taglinetv)
         tvShowClient = TVSeriesClient.instance
         ratingBar = v.findViewById(R.id.ratingBar)
+        showReviewsButton = v.findViewById(R.id.showReviewsButton)
+        reviewsContainer = v.findViewById(R.id.reviewsContainer)
+        reviewsRecyclerView = v.findViewById(R.id.reviewsRecyclerView)
+        reviewsOverlay = v.findViewById(R.id.reviewsOverlay)
+        reviewsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // OnClickListener para cambiar el tamaño de la imagen
         tvPoster.setOnClickListener {
@@ -134,8 +160,16 @@ class TvDetailFragment : Fragment() {
         }
 
         playTrailerButton.setOnClickListener {
-            showVideoOptionsDialog()
+            if (::currentTvShowVideos.isInitialized && currentTvShowVideos.isNotEmpty()) {
+                showVideoOptionsDialog()
+            } else {
+                Toast.makeText(requireContext(), "No videos available :(", Toast.LENGTH_SHORT).show()
+            }
         }
+
+        val params = reviewsContainer.layoutParams as ViewGroup.MarginLayoutParams
+        params.topMargin = 100.dpToPx()
+        reviewsContainer.layoutParams = params
     }
 
     private fun updateUI() {
@@ -151,6 +185,7 @@ class TvDetailFragment : Fragment() {
         val movieRating = tvShow.vote_average / 2
         ratingBar.rating = movieRating.toFloat()
 
+        // Carga la imagen de la portada utilizando Glide
         Glide.with(this)
             .load(Constants.IMAGE_BASE_URL + tvShow.poster_path)
             .override(600, 900)
@@ -218,6 +253,7 @@ class TvDetailFragment : Fragment() {
 
         loadCast(tvShow.id)
         loadCrew(tvShow.id)
+        fetchReviews(tvShow.id)
         initializeCurrentTvShowVideos(tvShow.id)
     }
 
@@ -327,6 +363,80 @@ class TvDetailFragment : Fragment() {
     private fun Int.dpToPx(): Int {
         val density = resources.displayMetrics.density
         return (this * density).toInt()
+    }
+
+    private fun fetchReviews(seriesId: Int) {
+        val call = ReviewClient.getInstance().getSeriesReviews(seriesId, Constants.API_KEY)
+        call.enqueue(object : Callback<ReviewResponse> {
+            override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+                if (response.isSuccessful) {
+                    val reviewList = response.body()?.results ?: emptyList()
+                    val reviewsAdapter = ReviewAdapter(reviewList)
+                    reviewsRecyclerView.adapter = reviewsAdapter
+
+                    if (reviewList.isNotEmpty()) {
+                        showReviewsButton.visibility = View.VISIBLE
+                    }
+                } else {
+                    Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
+
+    private fun toggleReviewsVisibility() {
+        if (reviewsVisible) {
+            hideReviewsContainer()
+        } else {
+            showReviewsContainer()
+        }
+    }
+
+    private fun showReviewsContainer() {
+        reviewsOverlay.visibility = View.VISIBLE
+        reviewsContainer.visibility = View.VISIBLE
+        reviewsContainer.translationY = reviewsContainer.height.toFloat()
+        reviewsContainer.animate()
+            .translationY(0f)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .setDuration(600)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    reviewsVisible = true
+                }
+            })
+            .start()
+    }
+
+    private fun hideReviewsContainer() {
+        reviewsContainer.animate()
+            .translationY(reviewsContainer.height.toFloat())
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .setDuration(600)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    reviewsContainer.visibility = View.GONE
+                    reviewsOverlay.visibility = View.GONE
+                    reviewsVisible = false
+                }
+            })
+            .start()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupOutsideTouchListener() {
+        reviewsOverlay.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN && reviewsVisible) {
+                hideReviewsContainer()
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun hideBottomNavigation() {

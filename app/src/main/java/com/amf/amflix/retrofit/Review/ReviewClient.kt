@@ -12,6 +12,9 @@ import retrofit2.http.Query
 interface ReviewService {
     @GET("movie/{movie_id}/reviews")
     fun getMovieReviews(@Path("movie_id") movieId: Int, @Query("api_key") apiKey: String): Call<ReviewResponse>
+
+    @GET("tv/{series_id}/reviews")
+    fun getSeriesReviews(@Path("series_id") seriesId: Int, @Query("api_key") apiKey: String): Call<ReviewResponse>
 }
 
 object ReviewClient {

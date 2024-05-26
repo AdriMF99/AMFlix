@@ -1,17 +1,24 @@
 package com.amf.amflix.ui.movies
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -73,9 +80,10 @@ class DetailFragment : Fragment() {
     private lateinit var tag: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var reviewsContainer: LinearLayout
-    private lateinit var showReviewsButton: Button
+    private lateinit var showReviewsButton: LottieAnimationView
     private lateinit var reviewsRecyclerView: RecyclerView
-    private var reviewsVisible = false
+    private lateinit var reviewsOverlay: FrameLayout
+    private var reviewsVisible: Boolean = false
 
     var movieClient: MovieClient?= null
 
@@ -93,8 +101,10 @@ class DetailFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_detail, container, false)
         initializeViews()
         playTrailerButton.playAnimation()
+        showReviewsButton.playAnimation()
 
         hideBottomNavigation()
+        setupOutsideTouchListener()
 
         flecha.setOnClickListener {
             val navController = findNavController()
@@ -138,9 +148,10 @@ class DetailFragment : Fragment() {
         tag = v.findViewById(R.id.taglineMovie)
         movieClient = MovieClient.instance
         ratingBar = v.findViewById(R.id.ratingBar)
-        reviewsContainer = v.findViewById(R.id.reviewsContainer)
         showReviewsButton = v.findViewById(R.id.showReviewsButton)
+        reviewsContainer = v.findViewById(R.id.reviewsContainer)
         reviewsRecyclerView = v.findViewById(R.id.reviewsRecyclerView)
+        reviewsOverlay = v.findViewById(R.id.reviewsOverlay)
         reviewsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // OnClickListener para cambiar el tamaño de la imagen
@@ -155,6 +166,10 @@ class DetailFragment : Fragment() {
                 Toast.makeText(requireContext(), "No videos available :(", Toast.LENGTH_SHORT).show()
             }
         }
+
+        val params = reviewsContainer.layoutParams as ViewGroup.MarginLayoutParams
+        params.topMargin = 100.dpToPx()
+        reviewsContainer.layoutParams = params
     }
 
     private fun updateUI() {
@@ -375,13 +390,53 @@ class DetailFragment : Fragment() {
 
     private fun toggleReviewsVisibility() {
         if (reviewsVisible) {
-            reviewsContainer.visibility = View.GONE
-            showReviewsButton.text = "Show Reviews"
+            hideReviewsContainer()
         } else {
-            reviewsContainer.visibility = View.VISIBLE
-            showReviewsButton.text = "Hide Reviews"
+            showReviewsContainer()
         }
-        reviewsVisible = !reviewsVisible
+    }
+
+    private fun showReviewsContainer() {
+        reviewsOverlay.visibility = View.VISIBLE
+        reviewsContainer.visibility = View.VISIBLE
+        reviewsContainer.translationY = reviewsContainer.height.toFloat()
+        reviewsContainer.animate()
+            .translationY(0f)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .setDuration(600)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    reviewsVisible = true
+                }
+            })
+            .start()
+    }
+
+    private fun hideReviewsContainer() {
+        reviewsContainer.animate()
+            .translationY(reviewsContainer.height.toFloat())
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .setDuration(600)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    reviewsContainer.visibility = View.GONE
+                    reviewsOverlay.visibility = View.GONE
+                    reviewsVisible = false
+                }
+            })
+            .start()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupOutsideTouchListener() {
+        reviewsOverlay.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN && reviewsVisible) {
+                hideReviewsContainer()
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun hideBottomNavigation() {

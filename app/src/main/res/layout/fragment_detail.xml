@@ -345,30 +345,45 @@
                         android:orientation="horizontal" />
                 </LinearLayout>
             </LinearLayout>
-            <Button
-                android:id="@+id/showReviewsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Show Reviews"
-                android:layout_marginTop="16dp" />
-
-            <!-- Contenedor de reviews escondido inicialmente -->
-            <LinearLayout
-                android:id="@+id/reviewsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginTop="16dp"
-                android:padding="16dp"
-                android:background="#2E2E2E">
-
-                <!-- RecyclerView para las reviews -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/reviewsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <FrameLayout
+        android:id="@+id/reviewsOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#80000000">
+
+        <LinearLayout
+            android:id="@+id/reviewsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_top"
+            android:elevation="16dp"
+            android:padding="16dp"
+            android:layout_gravity="bottom">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reviewsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </FrameLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/showReviewsButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:contentDescription="@string/show_reviews"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/reviewsbutton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
