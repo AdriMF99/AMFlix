@@ -34,10 +34,12 @@ import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
 import com.amf.amflix.retrofit.Crew.CrewClient
+import com.amf.amflix.retrofit.Images.ImagesClient
 import com.amf.amflix.retrofit.Review.ReviewClient
 import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.Crew.CrewResponse
+import com.amf.amflix.retrofit.models.Images.ImagesResponse
 import com.amf.amflix.retrofit.models.Review.ReviewResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
@@ -47,6 +49,7 @@ import com.amf.amflix.ui.Video.VideoDialogFragment
 import com.amf.amflix.ui.Video.VideoPlayerDialogFragment
 import com.amf.amflix.ui.movies.CastAdapter
 import com.amf.amflix.ui.movies.CrewAdapter
+import com.amf.amflix.ui.movies.PosterAdapter
 import com.amf.amflix.ui.movies.ReviewAdapter
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
@@ -83,6 +86,7 @@ class TvDetailFragment : Fragment() {
     private lateinit var reviewsContainer: LinearLayout
     private lateinit var reviewsRecyclerView: RecyclerView
     private lateinit var reviewsOverlay: FrameLayout
+    private lateinit var postersRecyclerView: RecyclerView
     private var reviewsVisible: Boolean = false
 
     var tvShowClient: TVSeriesClient?= null
@@ -153,6 +157,8 @@ class TvDetailFragment : Fragment() {
         reviewsRecyclerView = v.findViewById(R.id.reviewsRecyclerView)
         reviewsOverlay = v.findViewById(R.id.reviewsOverlay)
         reviewsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        postersRecyclerView = v.findViewById(R.id.postersRecyclerView)
+        postersRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         // OnClickListener para cambiar el tamaño de la imagen
         tvPoster.setOnClickListener {
@@ -254,6 +260,7 @@ class TvDetailFragment : Fragment() {
         loadCast(tvShow.id)
         loadCrew(tvShow.id)
         fetchReviews(tvShow.id)
+        fetchPosters(tvShow.id)
         initializeCurrentTvShowVideos(tvShow.id)
     }
 
@@ -273,6 +280,28 @@ class TvDetailFragment : Fragment() {
 
             override fun onFailure(call: retrofit2.Call<CastResponse>, t: Throwable) {
                 Log.e("TvDetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
+
+    private fun fetchPosters(seriesId: Int) {
+        val call = ImagesClient.getInstance().getSeriesImages(seriesId, Constants.API_KEY)
+        call.enqueue(object : Callback<ImagesResponse> {
+            override fun onResponse(call: Call<ImagesResponse>, response: Response<ImagesResponse>) {
+                if (response.isSuccessful) {
+                    val images = response.body()?.posters ?: emptyList()
+                    val posterUrls = images.map { "https://image.tmdb.org/t/p/w500${it.file_path}" }
+                    Log.d("DetailFragment", "Poster URLs: $posterUrls")
+                    postersRecyclerView.adapter = PosterAdapter(posterUrls)
+                } else {
+                    Log.e("DetailFragment", "Error al obtener las imágenes: ${response.errorBody()?.string()}")
+                    Toast.makeText(requireContext(), "Error al obtener las imágenes", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ImagesResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error en la llamada de red: ${t.message}")
+                Toast.makeText(requireContext(), "Error en la llamada de red", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -31,15 +31,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.lottie.LottieAnimationView
 import com.amf.amflix.R
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.Cast.CastClient
 import com.amf.amflix.retrofit.Crew.CrewClient
+import com.amf.amflix.retrofit.Images.ImagesClient
 import com.amf.amflix.retrofit.Review.ReviewClient
 import com.amf.amflix.retrofit.Video.VideoClient
 import com.amf.amflix.retrofit.models.Cast.CastResponse
 import com.amf.amflix.retrofit.models.Crew.CrewResponse
+import com.amf.amflix.retrofit.models.Images.ImagesResponse
 import com.amf.amflix.retrofit.models.Review.ReviewResponse
 import com.amf.amflix.retrofit.models.Video.Video
 import com.amf.amflix.retrofit.models.Video.VideoResponse
@@ -83,6 +86,7 @@ class DetailFragment : Fragment() {
     private lateinit var showReviewsButton: LottieAnimationView
     private lateinit var reviewsRecyclerView: RecyclerView
     private lateinit var reviewsOverlay: FrameLayout
+    private lateinit var postersRecyclerView: RecyclerView
     private var reviewsVisible: Boolean = false
 
     var movieClient: MovieClient?= null
@@ -153,6 +157,8 @@ class DetailFragment : Fragment() {
         reviewsRecyclerView = v.findViewById(R.id.reviewsRecyclerView)
         reviewsOverlay = v.findViewById(R.id.reviewsOverlay)
         reviewsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        postersRecyclerView = v.findViewById(R.id.postersRecyclerView)
+        postersRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         // OnClickListener para cambiar el tamaño de la imagen
         moviePoster.setOnClickListener {
@@ -189,15 +195,15 @@ class DetailFragment : Fragment() {
         Glide.with(this)
             .load(Constants.IMAGE_BASE_URL + movie.poster_path)
             .override(600, 900)
-            .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
-            .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
+            .placeholder(R.drawable.placeholder_load)
+            .error(R.drawable.error_image)
             .into(moviePoster)
 
         Glide.with(this)
             .load(Constants.IMAGE_BASE_URL + movie.backdrop_path)
             .override(350, 200)
-            .placeholder(R.drawable.placeholder_load) // Opcional: imagen de carga
-            .error(R.drawable.error_image) // Opcional: imagen de error si la carga falla
+            .placeholder(R.drawable.placeholder_load)
+            .error(R.drawable.error_image)
             .into(backdrop)
 
         // Llamar al servicio para obtener los detalles de la película
@@ -254,6 +260,7 @@ class DetailFragment : Fragment() {
         loadCast(movie.id)
         loadCrew(movie.id)
         fetchReviews(movie.id)
+        fetchPosters(movie.id)
         initializeCurrentMovieVideos(movie.id)
     }
 
@@ -273,6 +280,28 @@ class DetailFragment : Fragment() {
 
             override fun onFailure(call: retrofit2.Call<CastResponse>, t: Throwable) {
                 Log.e("DetailFragment", "Error: ${t.message}")
+            }
+        })
+    }
+
+    private fun fetchPosters(movieId: Int) {
+        val call = ImagesClient.getInstance().getMovieImages(movieId, Constants.API_KEY)
+        call.enqueue(object : Callback<ImagesResponse> {
+            override fun onResponse(call: Call<ImagesResponse>, response: Response<ImagesResponse>) {
+                if (response.isSuccessful) {
+                    val images = response.body()?.posters ?: emptyList()
+                    val posterUrls = images.map { "https://image.tmdb.org/t/p/w500${it.file_path}" }
+                    Log.d("DetailFragment", "Poster URLs: $posterUrls")
+                    postersRecyclerView.adapter = PosterAdapter(posterUrls)
+                } else {
+                    Log.e("DetailFragment", "Error al obtener las imágenes: ${response.errorBody()?.string()}")
+                    Toast.makeText(requireContext(), "Error al obtener las imágenes", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ImagesResponse>, t: Throwable) {
+                Log.e("DetailFragment", "Error en la llamada de red: ${t.message}")
+                Toast.makeText(requireContext(), "Error en la llamada de red", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -341,6 +341,25 @@
                         android:layout_marginTop="20dp"
                         android:paddingHorizontal="10dp"
                         android:orientation="horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lemonmilk_light"
+                        android:text="Posters"
+                        android:layout_marginTop="30dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/postersRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp"
+                        android:padding="8dp"
+                        android:clipToPadding="false"
+                        android:scrollbars="horizontal" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
