@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_search,
+                R.id.navigation_marcadores,
                 R.id.navigation_people
             )
         )
@@ -71,7 +72,8 @@ class MainActivity : AppCompatActivity() {
         if (dest == R.id.navigation_home ||
             dest == R.id.navigation_series ||
             dest == R.id.navigation_people ||
-            dest == R.id.navigation_search) {
+            dest == R.id.navigation_search ||
+            dest == R.id.navigation_marcadores) {
 
         } else {
             super.onBackPressed()

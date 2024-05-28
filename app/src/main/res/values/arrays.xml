@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type_array">
+        <item>Película</item>
+        <item>Serie</item>
+    </string-array>
+    <string-array name="sort_array">
+        <item>Popularidad</item>
+        <item>Fecha de lanzamiento</item>
+        <item>Calificación</item>
+    </string-array>
+    <string-array name="genre_array">
+        <item>Acción</item>
+        <item>Comedia</item>
+        <item>Drama</item>
+        <item>Terror</item>
+        <!-- Añadir más géneros según sea necesario -->
+    </string-array>
+</resources>
