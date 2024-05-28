@@ -58,4 +58,9 @@
         android:name="com.amf.amflix.ui.Search.SearchFragment"
         tools:layout="@layout/fragment_search" />
 
+    <fragment
+        android:id="@+id/navigation_marcadores"
+        android:name="com.amf.amflix.ui.Favourites.MercadoresFragment"
+        tools:layout="@layout/fragment_mercadores" />
+
 </navigation>

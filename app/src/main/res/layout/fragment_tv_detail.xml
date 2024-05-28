@@ -72,6 +72,18 @@
                     android:layout_marginBottom="16dp"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/videoanim"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/likeButton"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:lottie_repeatMode="restart"
+                    android:visibility="visible"
+                    android:background="@drawable/genre_item_background"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:lottie_rawRes="@raw/bandai_dokkan"/>
             </FrameLayout>
 
             <LinearLayout
@@ -389,7 +401,6 @@
                 android:layout_marginTop="8dp" />
         </LinearLayout>
     </FrameLayout>
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/showReviewsButton"
         android:layout_width="50dp"

@@ -74,6 +74,20 @@
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/videoanim"/>
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/likeButton"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:lottie_repeatMode="restart"
+                    android:visibility="visible"
+                    android:background="@drawable/genre_item_background"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="false"
+                    app:lottie_rawRes="@raw/bandai_dokkan"/>
+
             </FrameLayout>
 
             <LinearLayout
@@ -86,8 +100,8 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <TextView
                         android:id="@+id/movieTitle"
@@ -111,20 +125,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:textStyle="italic"
                         android:fontFamily="@font/lemonmilk_medium"
                         android:text="kakota"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <!-- Contenedor de géneros -->
                 <LinearLayout
                     android:id="@+id/genresContainer"
                     android:layout_width="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal" />
 
@@ -132,15 +146,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <!-- Titulos -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
@@ -148,38 +162,38 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lemonmilk_light"
+                            android:gravity="center"
                             android:text="Release Date"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:gravity="center" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lemonmilk_light"
+                            android:gravity="center"
                             android:text="Rating"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:gravity="center" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lemonmilk_light"
+                            android:gravity="center"
                             android:text="Popularity"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:gravity="center" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- Valores -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
@@ -188,10 +202,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lemonmilk_medium"
+                            android:gravity="center"
                             android:text="26-11-2023"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:gravity="center" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/movieRating"
@@ -199,10 +213,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lemonmilk_medium"
+                            android:gravity="center"
                             android:text="4.5"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:gravity="center" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/moviePopularity"
@@ -210,10 +224,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lemonmilk_medium"
+                            android:gravity="center"
                             android:text="10000"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:gravity="center" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <!-- Rating Bar -->
@@ -221,13 +235,13 @@
                         android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:stepSize="0.5"
-                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
                         android:isIndicator="true"
+                        android:numStars="5"
                         android:scaleX="0.75"
-                        android:scaleY="0.75" />
+                        android:scaleY="0.75"
+                        android:stepSize="0.5" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -263,12 +277,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:textStyle="italic"
                         android:fontFamily="@font/lemonmilk_medium"
                         android:text="kakota"
+                        android:textAlignment="center"
                         android:textColor="#FF5722"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textStyle="italic" />
 
                 </LinearLayout>
 
@@ -300,9 +314,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginTop="30dp"
                     android:gravity="center"
-                    android:layout_marginTop="30dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -317,16 +331,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:paddingHorizontal="10dp"
-                        android:orientation="horizontal" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginTop="30dp"
                     android:gravity="center"
-                    android:layout_marginTop="30dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -341,15 +355,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:paddingHorizontal="10dp"
-                        android:orientation="horizontal" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Posters"
-                        android:layout_marginTop="30dp"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
@@ -357,10 +371,10 @@
                         android:id="@+id/postersRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="20dp"
-                        android:padding="8dp"
                         android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
                         android:scrollbars="horizontal" />
 
                 </LinearLayout>
@@ -392,6 +406,7 @@
                 android:layout_marginTop="8dp" />
         </LinearLayout>
     </FrameLayout>
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/showReviewsButton"
         android:layout_width="50dp"

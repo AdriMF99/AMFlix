@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type_array">
+        <item>Película</item>
+        <item>Serie</item>
+    </string-array>
+    <string-array name="sort_array">
+        <item>Popularidad</item>
+        <item>Fecha de lanzamiento</item>
+        <item>Calificación</item>
+    </string-array>
+    <string-array name="genre_array">
+        <item>Acción</item>
+        <item>Animación</item>
+        <item>Comedia</item>
+        <item>Crimen</item>
+        <item>Documental</item>
+        <item>Drama</item>
+        <item>Fantasía</item>
+        <item>Familia</item>
+        <item>Historia</item>
+        <item>Terror</item>
+        <item>Música</item>
+        <item>Misterio</item>
+        <item>Romance</item>
+        <item>Ciencia ficción</item>
+        <item>Película de TV</item>
+        <item>Suspense</item>
+        <item>Bélica</item>
+        <item>Western</item>
+    </string-array>
+</resources>

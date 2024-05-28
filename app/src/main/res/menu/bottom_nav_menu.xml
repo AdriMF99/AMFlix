@@ -15,8 +15,14 @@
         android:title="" />
 
     <item
+        android:id="@+id/navigation_marcadores"
+        android:icon="@drawable/star"
+        android:enabled="true"
+        android:title="" />
+
+    <item
         android:id="@+id/navigation_people"
-        android:icon="@drawable/ic_round_people_alt_24"
+        android:icon="@drawable/settings"
         android:enabled="true"
         android:title="" />
 

@@ -37,17 +37,16 @@ class SearchAdaptertv(private val onClick: (TVSeries) -> Unit) : RecyclerView.Ad
         private val title: TextView = itemView.findViewById(R.id.movie_title)
         private val poster: ImageView = itemView.findViewById(R.id.movie_poster)
 
-        fun bind(movieOrSeries: TVSeries) {
-                title.text = movieOrSeries.name
-
+        fun bind(tvSeries: TVSeries) {
+            title.text = tvSeries.name
             Glide.with(itemView.context)
-                .load(Constants.IMAGE_BASE_URL + movieOrSeries.poster_path)
+                .load(Constants.IMAGE_BASE_URL + tvSeries.poster_path)
                 .placeholder(R.drawable.placeholder_load)
                 .error(R.drawable.no_img)
                 .into(poster)
 
             itemView.rootView.setOnClickListener {
-                onClick(movieOrSeries)
+                onClick(tvSeries)
             }
         }
     }
