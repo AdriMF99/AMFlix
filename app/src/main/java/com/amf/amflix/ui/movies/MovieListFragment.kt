@@ -63,7 +63,7 @@ class MovieListFragment : Fragment() {
         }
 
         // Obtención de datos de la capa de datos
-        movieViewModel.getPopularMovies().observe(viewLifecycleOwner, Observer {
+        movieViewModel.getTypeMovies().observe(viewLifecycleOwner, Observer {
             popularMovies = it
             // Actualización del adaptador
             movieAdapter.setData(popularMovies)

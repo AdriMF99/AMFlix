@@ -20,4 +20,7 @@ interface MovieService {
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId: Int): retrofit2.Call<Movie>
+
+    @GET("{type}")
+    fun getTypeMovies(@Path("type") type: String): retrofit2.Call<PopularMoviesResponse>
 }

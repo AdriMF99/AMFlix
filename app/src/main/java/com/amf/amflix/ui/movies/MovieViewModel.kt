@@ -18,13 +18,19 @@ class MovieViewModel: ViewModel() {
 
     private var movieRepository: MovieRepository
     private var popularMovies: LiveData<List<Movie>>
+    private var typeMovies: LiveData<List<Movie>>
 
     init {
         movieRepository = MovieRepository()
         popularMovies = movieRepository?.popularMovies()!!
+        typeMovies = movieRepository?.getTypeMovies()!!
     }
 
     fun getPopularMovies(): LiveData<List<Movie>>{
         return popularMovies
+    }
+
+    fun getTypeMovies(): LiveData<List<Movie>>{
+        return typeMovies
     }
 }

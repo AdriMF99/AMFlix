@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.amf.amflix.R
 import com.amf.amflix.retrofit.models.movies.Movie
 import com.amf.amflix.retrofit.models.series.TVSeries
+import com.amf.amflix.ui.movies.Type
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -41,6 +42,8 @@ class HomeFragment : Fragment() {
     private lateinit var trendingTvShowsAdapter: TvShowAdapter
 
     private lateinit var morePopular: TextView
+    private lateinit var moreTop: TextView
+    private lateinit var moreTrend: TextView
 
     private val handler = Handler(Looper.getMainLooper())
     private val autoScrollRunnable = object : Runnable {
@@ -66,6 +69,17 @@ class HomeFragment : Fragment() {
         handler.postDelayed(autoScrollRunnable, 1500)
 
         morePopular.setOnClickListener {
+            Type.tipopeli = "movie/popular"
+            findNavController().navigate(R.id.navigation_movies)
+        }
+
+        moreTop.setOnClickListener {
+            Type.tipopeli = "movie/top_rated"
+            findNavController().navigate(R.id.navigation_movies)
+        }
+
+        moreTrend.setOnClickListener {
+            Type.tipopeli = "trending/movie/day"
             findNavController().navigate(R.id.navigation_movies)
         }
     }
@@ -83,6 +97,8 @@ class HomeFragment : Fragment() {
         topRatedTvShowsRecyclerView = view.findViewById(R.id.top_rated_tv_shows_recycler_view)
         trendingTvShowsRecyclerView = view.findViewById(R.id.trending_tv_shows_recycler_view)
         morePopular = view.findViewById(R.id.morePopular)
+        moreTop = view.findViewById(R.id.moreTop)
+        moreTrend = view.findViewById(R.id.moreTrend)
 
         setupRecyclerView(popularMoviesRecyclerView)
         setupRecyclerView(topRatedMoviesRecyclerView)

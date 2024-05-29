@@ -68,6 +68,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
+                android:id="@+id/moreTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
@@ -99,6 +100,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
+                android:id="@+id/moreTrend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"

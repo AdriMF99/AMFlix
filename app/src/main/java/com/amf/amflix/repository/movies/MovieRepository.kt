@@ -8,6 +8,7 @@ import com.amf.amflix.retrofit.models.movies.Movie
 import com.amf.amflix.retrofit.models.movies.PopularMoviesResponse
 import com.amf.amflix.retrofit.movies.MovieClient
 import com.amf.amflix.retrofit.movies.MovieService
+import com.amf.amflix.ui.movies.Type
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,6 +58,25 @@ class MovieRepository {
         val popularMovies = MutableLiveData<List<Movie>>()
 
         val call: Call<PopularMoviesResponse>? = movieService?.getPopularMovies()
+        call?.enqueue(object : Callback<PopularMoviesResponse> {
+            override fun onResponse(call: Call<PopularMoviesResponse>, response: Response<PopularMoviesResponse>) {
+                if (response.isSuccessful) {
+                    popularMovies.value = response.body()?.results
+                }
+            }
+
+            override fun onFailure(call: Call<PopularMoviesResponse>, t: Throwable) {
+                Toast.makeText(App.instance, "Something went wrong, please check your internet connection", Toast.LENGTH_LONG).show()
+            }
+        })
+
+        return popularMovies
+    }
+
+    fun getTypeMovies(): LiveData<List<Movie>> {
+        val popularMovies = MutableLiveData<List<Movie>>()
+
+        val call: Call<PopularMoviesResponse>? = movieService?.getTypeMovies(Type.tipopeli)
         call?.enqueue(object : Callback<PopularMoviesResponse> {
             override fun onResponse(call: Call<PopularMoviesResponse>, response: Response<PopularMoviesResponse>) {
                 if (response.isSuccessful) {
