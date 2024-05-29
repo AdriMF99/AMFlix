@@ -1,14 +1,11 @@
 package com.amf.amflix.ui.Search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.amf.amflix.common.Constants
 import com.amf.amflix.retrofit.models.movies.Movie
-import com.amf.amflix.retrofit.models.movies.PopularMoviesResponse
 import com.amf.amflix.retrofit.models.series.TVSeries
-import com.amf.amflix.retrofit.models.series.TopTVSeriesResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,50 +72,6 @@ class SearchViewModel : ViewModel() {
             }
         })
     }
-
-    fun fetchFilteredMovies(query: String?, genre: String?, year: String?, sortBy: String?, type: String?) {
-        val call = query?.let {
-            RetrofitClient.instance.getFilteredMovies(Constants.API_KEY,
-                it, genre, year, sortBy, type)
-        }
-        call?.enqueue(object : Callback<PopularMoviesResponse> {
-            override fun onResponse(call: Call<PopularMoviesResponse>, response: Response<PopularMoviesResponse>) {
-                if (response.isSuccessful) {
-                    val movies = response.body()?.results ?: emptyList()
-                    Log.e("cositass", movies.toString())
-                    _searchResults.value = movies.toMutableList()
-                    _searchResults.postValue(_searchResults.value)
-                } else {
-                    // Manejar el error
-                }
-            }
-
-            override fun onFailure(call: Call<PopularMoviesResponse>, t: Throwable) {
-                // Manejar el error
-            }
-        })
-    }
-
-    fun fetchFilteredSeries(genre: String?, year: String?, sortBy: String?) {
-        val call = RetrofitClient.instance.getFilteredSeries(Constants.API_KEY, genre, year, sortBy)
-        call.enqueue(object : Callback<TopTVSeriesResponse> {
-            override fun onResponse(call: Call<TopTVSeriesResponse>, response: Response<TopTVSeriesResponse>) {
-                if (response.isSuccessful) {
-                    val series = response.body()?.results ?: emptyList()
-                    Log.e("cositass", series.toString())
-                    _searchResultstv.value = series.toMutableList()
-                    _searchResultstv.postValue(_searchResultstv.value)
-                } else {
-                    Log.e("API_ERROR", "Error: ${response.errorBody()?.string()}")
-                }
-            }
-
-            override fun onFailure(call: Call<TopTVSeriesResponse>, t: Throwable) {
-                Log.e("API_ERROR", "Failure: ${t.message}")
-            }
-        })
-    }
-
 
     fun clearSearchResults() {
         _searchResults.value?.clear()

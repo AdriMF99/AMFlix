@@ -17,6 +17,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
+<<<<<<< HEAD
+=======
+            android:id="@+id/radioButtonBookmarks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@null"
+            android:elevation="@dimen/cardview_compat_inset_shadow"
+            android:text="Bookmarks"
+            android:textAlignment="center"
+            android:textColor="@drawable/text_color_selector"
+            android:textStyle="bold" />
+
+        <RadioButton
+>>>>>>> origin/master
             android:id="@+id/radioButtonFavourites"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
+<<<<<<< HEAD
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
@@ -63,5 +80,7 @@
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+=======
+>>>>>>> origin/master
 
 </androidx.constraintlayout.widget.ConstraintLayout>
