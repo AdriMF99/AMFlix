@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -39,6 +40,8 @@ class HomeFragment : Fragment() {
     private lateinit var topRatedTvShowsAdapter: TvShowAdapter
     private lateinit var trendingTvShowsAdapter: TvShowAdapter
 
+    private lateinit var morePopular: TextView
+
     private val handler = Handler(Looper.getMainLooper())
     private val autoScrollRunnable = object : Runnable {
         override fun run() {
@@ -61,6 +64,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
         handler.postDelayed(autoScrollRunnable, 1500)
+
+        morePopular.setOnClickListener {
+            findNavController().navigate(R.id.navigation_movies)
+        }
     }
 
     override fun onDestroyView() {
@@ -75,6 +82,7 @@ class HomeFragment : Fragment() {
         popularTvShowsRecyclerView = view.findViewById(R.id.popular_tv_shows_recycler_view)
         topRatedTvShowsRecyclerView = view.findViewById(R.id.top_rated_tv_shows_recycler_view)
         trendingTvShowsRecyclerView = view.findViewById(R.id.trending_tv_shows_recycler_view)
+        morePopular = view.findViewById(R.id.morePopular)
 
         setupRecyclerView(popularMoviesRecyclerView)
         setupRecyclerView(topRatedMoviesRecyclerView)

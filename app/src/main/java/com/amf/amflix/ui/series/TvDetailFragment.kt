@@ -83,7 +83,7 @@ class TvDetailFragment : Fragment() {
     private lateinit var tag: TextView
     private lateinit var ratingBar: RatingBar
     private lateinit var showReviewsButton: LottieAnimationView
-    private lateinit var likeButton: LottieAnimationView
+    private lateinit var loveButton: LottieAnimationView
     private lateinit var reviewsContainer: LinearLayout
     private lateinit var reviewsRecyclerView: RecyclerView
     private lateinit var reviewsOverlay: FrameLayout
@@ -128,13 +128,13 @@ class TvDetailFragment : Fragment() {
         }
         var isLiked = false
 
-        likeButton.setOnClickListener {
+        loveButton.setOnClickListener {
             if (isLiked) {
-                likeButton.speed = -1f
-                likeButton.playAnimation()
+                loveButton.speed = -1f
+                loveButton.playAnimation()
             } else {
-                likeButton.speed = 1f
-                likeButton.playAnimation()
+                loveButton.speed = 1f
+                loveButton.playAnimation()
             }
             isLiked = !isLiked
         }
@@ -167,6 +167,7 @@ class TvDetailFragment : Fragment() {
         ratingBar = v.findViewById(R.id.ratingBar)
         showReviewsButton = v.findViewById(R.id.showReviewsButton)
         playTrailerButton = v.findViewById(R.id.playTrailerButton)
+        loveButton = v.findViewById(R.id.loveButton)
         reviewsContainer = v.findViewById(R.id.reviewsContainer)
         reviewsRecyclerView = v.findViewById(R.id.reviewsRecyclerView)
         reviewsOverlay = v.findViewById(R.id.reviewsOverlay)
