@@ -11,7 +11,6 @@
     </string-array>
     <string-array name="genre_array">
         <item>Acción</item>
-<<<<<<< HEAD
         <item>Animación</item>
         <item>Comedia</item>
         <item>Crimen</item>
@@ -29,11 +28,5 @@
         <item>Suspense</item>
         <item>Bélica</item>
         <item>Western</item>
-=======
-        <item>Comedia</item>
-        <item>Drama</item>
-        <item>Terror</item>
-        <!-- Añadir más géneros según sea necesario -->
->>>>>>> origin/master
     </string-array>
 </resources>

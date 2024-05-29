@@ -1,6 +1,8 @@
 package com.amf.amflix.ui.Home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +39,14 @@ class HomeFragment : Fragment() {
     private lateinit var topRatedTvShowsAdapter: TvShowAdapter
     private lateinit var trendingTvShowsAdapter: TvShowAdapter
 
+    private val handler = Handler(Looper.getMainLooper())
+    private val autoScrollRunnable = object : Runnable {
+        override fun run() {
+            autoScrollRecyclerView(popularMoviesRecyclerView)
+            handler.postDelayed(this, 50)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,10 +60,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
+        handler.postDelayed(autoScrollRunnable, 1500)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        handler.removeCallbacks(autoScrollRunnable)
     }
 
     private fun initializeViews(view: View) {
@@ -114,6 +126,16 @@ class HomeFragment : Fragment() {
         tvSeriesViewModel.trendingTvShows.observe(viewLifecycleOwner, Observer { tvShows ->
             trendingTvShowsAdapter.submitList(tvShows)
         })
+    }
+
+    private fun autoScrollRecyclerView(recyclerView: RecyclerView) {
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        val lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+        val itemCount = layoutManager.itemCount
+        recyclerView.smoothScrollBy(5, 0) // Ajusta la distancia del desplazamiento para un desplazamiento más suave
+        if (lastVisibleItemPosition == itemCount - 1) {
+            recyclerView.scrollToPosition(0)
+        }
     }
 
     private fun navigateToMovieDetail(movie: Movie) {

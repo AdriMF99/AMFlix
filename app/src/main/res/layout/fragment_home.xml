@@ -12,13 +12,37 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@color/white"
+            android:layout_height="100dp"
+            android:src="@drawable/logoamf"
+            android:layout_marginBottom="16dp"
+            android:elevation="20dp"/>
+
+        <!-- Popular Movies Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Popular Movies"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Popular Movies"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:id="@+id/morePopular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More ->"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/popular_movies_recycler_view"
@@ -27,13 +51,29 @@
             android:paddingBottom="16dp"
             android:clipToPadding="false" />
 
-        <TextView
+        <!-- Top Rated Movies Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:text="Top Rated Movies"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Top Rated Movies"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More ->"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/top_rated_movies_recycler_view"
@@ -42,13 +82,29 @@
             android:paddingBottom="16dp"
             android:clipToPadding="false" />
 
-        <TextView
+        <!-- Trending Movies Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:text="Trending Movies"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trending Movies"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More ->"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trending_movies_recycler_view"
@@ -57,13 +113,29 @@
             android:paddingBottom="16dp"
             android:clipToPadding="false" />
 
-        <TextView
+        <!-- Popular TV Shows Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:text="Popular TV Shows"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Popular TV Shows"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More ->"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/popular_tv_shows_recycler_view"
@@ -72,13 +144,29 @@
             android:paddingBottom="16dp"
             android:clipToPadding="false" />
 
-        <TextView
+        <!-- Top Rated TV Shows Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:text="Top Rated TV Shows"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Top Rated TV Shows"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More ->"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/top_rated_tv_shows_recycler_view"
@@ -87,13 +175,29 @@
             android:paddingBottom="16dp"
             android:clipToPadding="false" />
 
-        <TextView
+        <!-- Trending TV Shows Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:text="Trending TV Shows"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Trending TV Shows"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More ->"
+                android:textColor="@color/white"
+                android:textAppearance="?attr/textAppearanceBody1" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trending_tv_shows_recycler_view"
