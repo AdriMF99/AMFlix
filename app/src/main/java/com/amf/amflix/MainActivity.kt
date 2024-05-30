@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         val dest = navController.currentDestination?.id
 
         if (dest == R.id.navigation_home ||
-            dest == R.id.navigation_series ||
             dest == R.id.navigation_people ||
             dest == R.id.navigation_search ||
             dest == R.id.navigation_marcadores) {

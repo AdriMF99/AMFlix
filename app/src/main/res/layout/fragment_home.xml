@@ -132,6 +132,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
+                android:id="@+id/morePopulartv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
@@ -163,6 +164,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
+                android:id="@+id/moreToptv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
@@ -194,6 +196,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
+                android:id="@+id/moreTrendtv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"

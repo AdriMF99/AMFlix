@@ -18,13 +18,19 @@ class TvSeriesViewModel: ViewModel() {
 
     private var seriesRepository: TVSeriesRepository
     private var popularSeries: LiveData<List<TVSeries>>
+    private var typeSeries: LiveData<List<TVSeries>>
 
     init {
         seriesRepository = TVSeriesRepository()
         popularSeries = seriesRepository?.popularSeries()!!
+        typeSeries = seriesRepository?.getTypeSeries()!!
     }
 
     fun getPopularSeries(): LiveData<List<TVSeries>>{
         return popularSeries
+    }
+
+    fun getTypeSeries(): LiveData<List<TVSeries>>{
+        return typeSeries
     }
 }

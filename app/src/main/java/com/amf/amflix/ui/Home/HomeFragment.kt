@@ -44,6 +44,9 @@ class HomeFragment : Fragment() {
     private lateinit var morePopular: TextView
     private lateinit var moreTop: TextView
     private lateinit var moreTrend: TextView
+    private lateinit var morePopulartv: TextView
+    private lateinit var moreToptv: TextView
+    private lateinit var moreTrendtv: TextView
 
     private val handler = Handler(Looper.getMainLooper())
     private val autoScrollRunnable = object : Runnable {
@@ -82,6 +85,21 @@ class HomeFragment : Fragment() {
             Type.tipopeli = "trending/movie/day"
             findNavController().navigate(R.id.navigation_movies)
         }
+
+        morePopulartv.setOnClickListener {
+            Type.tipopeli = "tv/popular"
+            findNavController().navigate(R.id.navigation_series)
+        }
+
+        moreToptv.setOnClickListener {
+            Type.tipopeli = "tv/top_rated"
+            findNavController().navigate(R.id.navigation_series)
+        }
+
+        moreTrendtv.setOnClickListener {
+            Type.tipopeli = "trending/tv/day"
+            findNavController().navigate(R.id.navigation_series)
+        }
     }
 
     override fun onDestroyView() {
@@ -99,6 +117,9 @@ class HomeFragment : Fragment() {
         morePopular = view.findViewById(R.id.morePopular)
         moreTop = view.findViewById(R.id.moreTop)
         moreTrend = view.findViewById(R.id.moreTrend)
+        morePopulartv = view.findViewById(R.id.morePopulartv)
+        moreToptv = view.findViewById(R.id.moreToptv)
+        moreTrendtv = view.findViewById(R.id.moreTrendtv)
 
         setupRecyclerView(popularMoviesRecyclerView)
         setupRecyclerView(topRatedMoviesRecyclerView)

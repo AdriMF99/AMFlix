@@ -108,4 +108,6 @@ dependencies {
 
     // animaciones
     implementation("com.airbnb.android:lottie:3.4.0")
+
+    implementation("androidx.palette:palette-ktx:1.0.0")
 }

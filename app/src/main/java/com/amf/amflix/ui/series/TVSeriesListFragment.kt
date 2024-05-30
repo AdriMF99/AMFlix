@@ -65,7 +65,7 @@ class TVSeriesListFragment : Fragment() {
         }
 
         // Obtención de datos de la capa de datos
-        seriesViewModel.getPopularSeries().observe(viewLifecycleOwner, Observer {
+        seriesViewModel.getTypeSeries().observe(viewLifecycleOwner, Observer {
             popularSeries = it
             // Actualización del adaptador
             seriesAdapter.setData(popularSeries)

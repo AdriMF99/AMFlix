@@ -21,4 +21,6 @@ interface TVSeriesService {
 
     @GET("tv/{series_id}")
     fun getTvShowDetails(@Path("series_id") seriesId: Int): retrofit2.Call<TVSeries>
+    @GET("{type}")
+    fun getTypeSeries(@Path("type") type: String): retrofit2.Call<TopTVSeriesResponse>
 }

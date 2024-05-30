@@ -78,7 +78,7 @@ class SearchFragment : Fragment() {
             }
         }
 
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         adapter = SearchAdapter { movie -> navigateToMovieDetail(movie) }
         adaptertv = SearchAdaptertv { serie -> navigateToTvShowDetail(serie) }
 
