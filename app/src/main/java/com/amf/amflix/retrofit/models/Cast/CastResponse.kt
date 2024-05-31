@@ -5,6 +5,7 @@ data class CastResponse(
 )
 
 data class Cast(
+    val id: Int,
     val name: String,
     val character: String,
     val profile_path: String

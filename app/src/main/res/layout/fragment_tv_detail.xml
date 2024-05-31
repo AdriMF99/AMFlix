@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="25dp"
+                android:paddingHorizontal="15dp"
                 android:paddingVertical="10dp">
 
                 <LinearLayout
@@ -276,7 +276,6 @@
                         android:textAlignment="center"
                         android:textStyle="italic"
                         android:fontFamily="@font/lemonmilk_medium"
-                        android:text="kakota"
                         android:textColor="#FF5722"
                         android:textSize="15sp" />
 
@@ -327,7 +326,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:paddingHorizontal="10dp"
                         android:orientation="horizontal" />
                 </LinearLayout>
 
@@ -351,7 +349,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:paddingHorizontal="10dp"
                         android:orientation="horizontal" />
 
                     <TextView

@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.amf.amflix.common.App
 import com.amf.amflix.retrofit.models.people.People
+import com.amf.amflix.retrofit.models.people.PersonResponse
 import com.amf.amflix.retrofit.models.people.PopularPeopleResponse
 import com.amf.amflix.retrofit.people.PeopleClient
 import com.amf.amflix.retrofit.people.PeopleService
@@ -15,11 +16,13 @@ class PeopleRepository {
     var peopleService: PeopleService? = null
     var peopleClient: PeopleClient? = null
     var popularPeople: MutableLiveData<List<People>> ? = null
+    var typeperson: MutableLiveData<PersonResponse>? = null
 
     init {
         peopleClient = PeopleClient.instance
         peopleService = peopleClient?.getPeopleService()
         popularPeople = popularPeople()
+        typeperson = MutableLiveData()
     }
 
     fun popularPeople(): MutableLiveData<List<People>>?{
@@ -48,4 +51,27 @@ class PeopleRepository {
 
     }
 
+    fun getPerson(personId: Int): MutableLiveData<PersonResponse>? {
+        if (typeperson == null) {
+            typeperson = MutableLiveData()
+        }
+
+        val call: Call<PersonResponse>? = peopleService?.getPerson(personId)
+        call?.enqueue(object : Callback<PersonResponse> {
+            override fun onResponse(
+                call: Call<PersonResponse>,
+                response: Response<PersonResponse>
+            ) {
+                if (response.isSuccessful) {
+                    typeperson?.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<PersonResponse>, t: Throwable) {
+                Toast.makeText(App.instance, "Something went wrong, please check your internet connection", Toast.LENGTH_LONG).show()
+            }
+        })
+
+        return typeperson
+    }
 }

@@ -63,4 +63,9 @@
         android:name="com.amf.amflix.ui.Favourites.MercadoresFragment"
         tools:layout="@layout/fragment_mercadores" />
 
+    <fragment
+        android:id="@+id/navigation_detailsperson"
+        android:name="com.amf.amflix.ui.people.DetailPeopleFragment"
+        tools:layout="@layout/fragment_detail_people" />
+
 </navigation>
