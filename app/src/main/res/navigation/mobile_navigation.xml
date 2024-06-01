@@ -68,4 +68,9 @@
         android:name="com.amf.amflix.ui.people.DetailPeopleFragment"
         tools:layout="@layout/fragment_detail_people" />
 
+    <fragment
+        android:id="@+id/navigation_connection"
+        android:name="com.amf.amflix.ui.Conection.ConnectionFragment"
+        tools:layout="@layout/fragment_connection" />
+
 </navigation>

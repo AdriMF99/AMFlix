@@ -20,10 +20,4 @@
         android:enabled="true"
         android:title="" />
 
-    <item
-        android:id="@+id/navigation_people"
-        android:icon="@drawable/settings"
-        android:enabled="true"
-        android:title="" />
-
 </menu>
