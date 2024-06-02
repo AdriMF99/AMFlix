@@ -36,7 +36,7 @@ class CrewAdapter(private val crewList: List<Crew>) : RecyclerView.Adapter<CrewA
             Glide.with(itemView.context)
                 .load(Constants.IMAGE_BASE_URL + crewMember.profile_path)
                 .placeholder(R.drawable.placeholder_load)
-                .error(R.drawable.error_image)
+                .error(R.drawable.noperson)
                 .into(personImg)
         }
     }

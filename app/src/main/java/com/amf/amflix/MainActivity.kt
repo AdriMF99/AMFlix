@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home,
                 R.id.navigation_search,
                 R.id.navigation_marcadores,
+                R.id.navigation_settings,
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -78,7 +79,8 @@ class MainActivity : AppCompatActivity() {
         if (dest == R.id.navigation_home ||
             dest == R.id.navigation_people ||
             dest == R.id.navigation_search ||
-            dest == R.id.navigation_marcadores) {
+            dest == R.id.navigation_marcadores ||
+            dest == R.id.navigation_settings) {
 
         } else {
             super.onBackPressed()

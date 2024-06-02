@@ -4,19 +4,25 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/homemenu"
         android:enabled="true"
         android:title="" />
 
     <item
         android:id="@+id/navigation_search"
-        android:icon="@android:drawable/ic_search_category_default"
+        android:icon="@drawable/searchmenu"
         android:enabled="true"
         android:title="" />
 
     <item
         android:id="@+id/navigation_marcadores"
-        android:icon="@drawable/star"
+        android:icon="@drawable/bookico"
+        android:enabled="true"
+        android:title="" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/usermenu"
         android:enabled="true"
         android:title="" />
 

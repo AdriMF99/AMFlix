@@ -63,7 +63,7 @@ class DetailPeopleFragment : Fragment() {
                 .load(Constants.IMAGE_BASE_URL + it.profile_path)
                 .override(600, 900)
                 .placeholder(R.drawable.placeholder_load)
-                .error(R.drawable.error_image)
+                .error(R.drawable.noperson)
                 .into(binding.personThumbnail)
         }
     }

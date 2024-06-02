@@ -41,7 +41,7 @@ class CastAdapter(
             Glide.with(binding.root.context)
                 .load(Constants.IMAGE_BASE_URL + castMember.profile_path)
                 .placeholder(R.drawable.placeholder_load)
-                .error(R.drawable.error_image)
+                .error(R.drawable.noperson)
                 .into(binding.personImg)
 
             binding.root.setOnClickListener {

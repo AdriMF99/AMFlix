@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
 
 class LoginOrRegisterFragment : Fragment() {
@@ -13,7 +15,19 @@ class LoginOrRegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_or_register, container, false)
+        val view = inflater.inflate(R.layout.fragment_login_or_register, container, false)
+
+        val btnOpenLogin = view.findViewById<Button>(R.id.gotologinButton)
+        val btnOpenRegister = view.findViewById<Button>(R.id.gotoregisterButton)
+
+        btnOpenLogin.setOnClickListener {
+            findNavController().navigate(R.id.navigation_login)
+        }
+
+        btnOpenRegister.setOnClickListener {
+            findNavController().navigate(R.id.navigation_register)
+        }
+
+        return view
     }
 }

@@ -78,4 +78,9 @@
         android:name="com.amf.amflix.ui.signin.LoginOrRegisterFragment"
         tools:layout="@layout/fragment_login_or_register" />
 
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.amf.amflix.ui.signin.SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>
