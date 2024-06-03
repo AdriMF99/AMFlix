@@ -34,7 +34,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        hideBottomNavigation()
         binding = FragmentLoginBinding.inflate(layoutInflater)
         val view = binding.root
         goreg = binding.GoRegister
@@ -75,6 +74,7 @@ class LoginFragment : Fragment() {
                                     "Has iniciado sesión!",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                findNavController().navigate(R.id.navigation_settings)
                             } else {
                                 // El usuario no ha verificado su correo electrónico
                                 Toast.makeText(
@@ -104,23 +104,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        showBottomNavigation()
-    }
-
-    private fun hideBottomNavigation() {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-        bottomNavigationView.visibility = View.GONE
-    }
-
-    private fun showBottomNavigation() {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
-        bottomNavigationView.visibility = View.VISIBLE
-    }
-
     private fun showAlert() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Error")
@@ -145,6 +128,7 @@ class LoginFragment : Fragment() {
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                         if (it.isSuccessful){
                             Toast.makeText(requireContext(), "Has iniciado sesión!", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.navigation_settings)
                         } else{
                             showAlert()
                         }

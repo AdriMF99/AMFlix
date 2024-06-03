@@ -44,6 +44,7 @@ android {
 
 dependencies {
 
+
     val retrofitVersion = "2.9.0"
     val okhttpVersion = "4.11.0"
     val coilVersion = "2.4.0"
