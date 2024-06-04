@@ -33,7 +33,7 @@ AMFlix es una aplicación de películas para Android que utiliza la API de TMDB 
 
 1. **Clona el repositorio:**
    ```sh
-   git clone https://github.com/tu-usuario/AMFlix.git
+   git clone https://github.com/AdriMF99/AMFlix.git
    ```
 
 2. **Abre el proyecto en Android Studio.**
