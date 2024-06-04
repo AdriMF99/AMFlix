@@ -47,7 +47,7 @@ AMFlix es una aplicación de películas para Android que utiliza la API de TMDB 
 
 4. **Construye y ejecuta la aplicación en tu dispositivo o emulador Android.**
 
-5. ¡Listo! Ahora puedes disfrutar de la experiencia de películas más genial de todos los tiempos.
+5. **¡Listo! Ahora puedes disfrutar de la experiencia de películas más genial de todos los tiempos.**
 
 ## 🤝 Contribuciones
 
