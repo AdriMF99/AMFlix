@@ -54,6 +54,8 @@ import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.qamar.curvedbottomnaviagtion.setMargins
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -90,6 +92,11 @@ class DetailFragment : Fragment() {
     private lateinit var postersRecyclerView: RecyclerView
     private var reviewsVisible: Boolean = false
 
+    private var isLiked = false
+
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
     var movieClient: MovieClient?= null
 
 
@@ -122,22 +129,13 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateUI()
+        setupLikeButton()
+        checkIfMovieIsFavorite()
         initializeCurrentMovieVideos(movieviewmodel.selected?.id ?: return)
         showReviewsButton.setOnClickListener {
             toggleReviewsVisibility()
         }
-        var isLiked = false
 
-        likeButton.setOnClickListener {
-            if (isLiked) {
-                likeButton.speed = -1f
-                likeButton.playAnimation()
-            } else {
-                likeButton.speed = 1f
-                likeButton.playAnimation()
-            }
-            isLiked = !isLiked
-        }
     }
 
     override fun onDestroyView() {
@@ -276,6 +274,97 @@ class DetailFragment : Fragment() {
         fetchReviews(movie.id)
         fetchPosters(movie.id)
         initializeCurrentMovieVideos(movie.id)
+    }
+
+    private fun checkIfMovieIsFavorite() {
+        val user = auth.currentUser
+        val movie = movieviewmodel.selected ?: return
+
+        if (user != null) {
+            val userId = user.uid
+            val docRef = db.collection("users").document(userId)
+                .collection("favourites").document(movie.id.toString())
+
+            docRef.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    isLiked = true
+                    likeButton.progress = 1.0f // Asegúrate de que la animación de "like" esté completa
+                } else {
+                    isLiked = false
+                    likeButton.progress = 0.0f // Asegúrate de que la animación de "like" no esté activada
+                }
+            }.addOnFailureListener { e ->
+                Log.w("DetailFragment", "Error checking favorites", e)
+            }
+        }
+    }
+
+    private fun setupLikeButton() {
+        likeButton.setOnClickListener {
+            val user = auth.currentUser
+            if (user != null) {
+                val userId = user.uid
+                val movie = movieviewmodel.selected ?: return@setOnClickListener
+
+                if (isLiked) {
+                    removeFavorite(userId, movie.id)
+                } else {
+                    addFavorite(userId, movie.id, movie.title, movie.poster_path)
+                }
+                isLiked = !isLiked
+                toggleLikeButtonAnimation()
+            } else {
+                Toast.makeText(requireContext(), "Please log in to save favorites", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun addFavorite(userId: String, movieId: Int, movieTitle: String, poster: String) {
+        val favorite = hashMapOf(
+            "movieId" to movieId,
+            "title" to movieTitle,
+            "posterUrl" to poster
+        )
+
+        Log.d("DetailFragment", "Adding favorite: $favorite for user: $userId")
+
+        db.collection("users").document(userId)
+            .collection("favourites").document(movieId.toString())
+            .set(favorite)
+            .addOnSuccessListener {
+                Log.d("DetailFragment", "Favorite added successfully")
+                Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.w("DetailFragment", "Error adding favorite", e)
+                Toast.makeText(requireContext(), "Failed to add favorite", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun removeFavorite(userId: String, movieId: Int) {
+        Log.d("DetailFragment", "Removing favorite for user: $userId, movieId: $movieId")
+
+        db.collection("users").document(userId)
+            .collection("favourites").document(movieId.toString())
+            .delete()
+            .addOnSuccessListener {
+                Log.d("DetailFragment", "Favorite removed successfully")
+                Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.w("DetailFragment", "Error removing favorite", e)
+                Toast.makeText(requireContext(), "Failed to remove favorite", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun toggleLikeButtonAnimation() {
+        if (isLiked) {
+            likeButton.speed = 1f
+            likeButton.playAnimation()
+        } else {
+            likeButton.speed = -1f
+            likeButton.playAnimation()
+        }
     }
 
 

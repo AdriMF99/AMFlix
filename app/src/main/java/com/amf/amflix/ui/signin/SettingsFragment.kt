@@ -1,6 +1,7 @@
 package com.amf.amflix.ui.signin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -57,12 +56,13 @@ class SettingsFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val name = document.getString("name")
-                        val imageUrl = document.getString("profileImage")
                         tvUserName.text = "User Name: $name"
                         tvUserEmail.text = "Email: ${user.email}"
+                    } else {
+                        tvUserName.text = "User Name: N/A"
                     }
                 }
-                .addOnFailureListener {
+                .addOnFailureListener { exception ->
                     tvUserName.text = "User Name: N/A"
                 }
             btnOpenLogin.visibility = View.GONE
@@ -76,8 +76,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showBottomNavigation() {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.VISIBLE
     }
 }
