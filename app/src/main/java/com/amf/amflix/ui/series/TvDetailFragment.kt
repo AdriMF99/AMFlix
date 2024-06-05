@@ -309,11 +309,7 @@ class TvDetailFragment : Fragment() {
                 if (isLiked) {
                     removeFavorite(userId, tvShow.id)
                 } else {
-                    tvShow.poster_path?.let { it1 ->
-                        addFavorite(userId, tvShow.id, tvShow.name,
-                            it1
-                        )
-                    }
+                    addFavorite(userId, tvShow)
                 }
                 isLiked = !isLiked
                 toggleLoveButtonAnimation()
@@ -323,17 +319,30 @@ class TvDetailFragment : Fragment() {
         }
     }
 
-    private fun addFavorite(userId: String, tvShowId: Int, tvShowTitle: String, poster: String) {
+
+    private fun addFavorite(userId: String, tvSeries: TVSeries) {
         val favorite = hashMapOf(
-            "tvShowId" to tvShowId,
-            "title" to tvShowTitle,
-            "posterUrl" to poster
+            "id" to tvSeries.id,
+            "backdrop_path" to tvSeries.backdrop_path,
+            "first_air_date" to tvSeries.first_air_date,
+            "genres" to tvSeries.genres,
+            "media_type" to tvSeries.media_type,
+            "name" to tvSeries.name,
+            "origin_country" to tvSeries.origin_country,
+            "original_language" to tvSeries.original_language,
+            "original_name" to tvSeries.original_name,
+            "overview" to tvSeries.overview,
+            "popularity" to tvSeries.popularity,
+            "poster_path" to tvSeries.poster_path,
+            "vote_average" to tvSeries.vote_average,
+            "vote_count" to tvSeries.vote_count,
+            "tagline" to tvSeries.tagline
         )
 
         Log.d("TvDetailFragment", "Adding favorite: $favorite for user: $userId")
 
         db.collection("users").document(userId)
-            .collection("tv_favorites").document(tvShowId.toString())
+            .collection("tv_favorites").document(tvSeries.id.toString())
             .set(favorite)
             .addOnSuccessListener {
                 Log.d("TvDetailFragment", "Favorite added successfully")

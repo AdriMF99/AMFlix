@@ -288,10 +288,10 @@ class DetailFragment : Fragment() {
             docRef.get().addOnSuccessListener { document ->
                 if (document.exists()) {
                     isLiked = true
-                    likeButton.progress = 1.0f // Asegúrate de que la animación de "like" esté completa
+                    likeButton.progress = 1.0f
                 } else {
                     isLiked = false
-                    likeButton.progress = 0.0f // Asegúrate de que la animación de "like" no esté activada
+                    likeButton.progress = 0.0f
                 }
             }.addOnFailureListener { e ->
                 Log.w("DetailFragment", "Error checking favorites", e)
@@ -309,7 +309,7 @@ class DetailFragment : Fragment() {
                 if (isLiked) {
                     removeFavorite(userId, movie.id)
                 } else {
-                    addFavorite(userId, movie.id, movie.title, movie.poster_path)
+                    addFavorite(userId, movie)
                 }
                 isLiked = !isLiked
                 toggleLikeButtonAnimation()
@@ -319,17 +319,32 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun addFavorite(userId: String, movieId: Int, movieTitle: String, poster: String) {
+    private fun addFavorite(userId: String, movie: Movie) {
         val favorite = hashMapOf(
-            "movieId" to movieId,
-            "title" to movieTitle,
-            "posterUrl" to poster
+            "movieId" to movie.id,
+            "title" to movie.title,
+            "posterUrl" to movie.poster_path,
+            "adult" to movie.adult,
+            "backdrop_path" to movie.backdrop_path,
+            "genres" to movie.genres,
+            "original_language" to movie.original_language,
+            "original_title" to movie.original_title,
+            "original_name" to movie.original_name,
+            "name" to movie.name,
+            "media_type" to movie.media_type,
+            "overview" to movie.overview,
+            "popularity" to movie.popularity,
+            "release_date" to movie.release_date,
+            "video" to movie.video,
+            "vote_average" to movie.vote_average,
+            "vote_count" to movie.vote_count,
+            "tagline" to movie.tagline
         )
 
         Log.d("DetailFragment", "Adding favorite: $favorite for user: $userId")
 
         db.collection("users").document(userId)
-            .collection("favourites").document(movieId.toString())
+            .collection("favourites").document(movie.id.toString())
             .set(favorite)
             .addOnSuccessListener {
                 Log.d("DetailFragment", "Favorite added successfully")
