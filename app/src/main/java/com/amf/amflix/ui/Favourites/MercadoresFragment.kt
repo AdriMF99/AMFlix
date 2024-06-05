@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amf.amflix.R
 import com.amf.amflix.retrofit.models.movies.Movie
@@ -19,6 +18,7 @@ class MercadoresFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
+    private lateinit var favoriteSeriesAdapter: FavoriteSeriesAdapter
     private lateinit var radioGroup: RadioGroup
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -34,12 +34,13 @@ class MercadoresFragment : Fragment() {
 
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         favoriteMoviesAdapter = FavoriteMoviesAdapter(emptyList())
+        favoriteSeriesAdapter = FavoriteSeriesAdapter(emptyList())
         recyclerView.adapter = favoriteMoviesAdapter
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.radioButtonFavMovies -> loadFavoriteMovies()
-                // Puedes agregar lógica para los otros radio buttons aquí
+                R.id.radioButtonFavSeries -> loadFavoriteSeries()
             }
         }
 
@@ -58,15 +59,45 @@ class MercadoresFragment : Fragment() {
                         )
                     }
                     favoriteMoviesAdapter.updateData(movies)
+                    recyclerView.adapter = favoriteMoviesAdapter
                 }
                 .addOnFailureListener { exception ->
-                    Log.e("MARCADORES", exception.message.toString())
+                    Log.e("MARCADORES", "Error loading series: ${exception.message}")
                 }
+        } else {
+            Log.e("MARCADORES", "User ID is null")
+        }
+    }
+
+    private fun loadFavoriteSeries() {
+        if (userId != null) {
+            db.collection("users").document(userId).collection("tv_favorites")
+                .get()
+                .addOnSuccessListener { documents ->
+                    val series = documents.map { doc ->
+                        Serie(
+                            name = doc.getString("title") ?: "",
+                            poster_path = doc.getString("posterUrl") ?: ""
+                        )
+                    }
+                    favoriteSeriesAdapter.updateData(series)
+                    recyclerView.adapter = favoriteSeriesAdapter
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("MARCADORES", "Error loading series: ${exception.message}")
+                }
+        } else {
+            Log.e("MARCADORES", "User ID is null")
         }
     }
 }
 
 data class Movie(
     val title: String = "",
+    val poster_path: String = ""
+)
+
+data class Serie(
+    val name: String = "",
     val poster_path: String = ""
 )

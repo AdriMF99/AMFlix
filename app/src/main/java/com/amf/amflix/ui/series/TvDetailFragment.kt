@@ -55,6 +55,8 @@ import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -92,6 +94,11 @@ class TvDetailFragment : Fragment() {
 
     var tvShowClient: TVSeriesClient?= null
 
+    private var isLiked = false
+
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
 
     private var isExpanded = false
     private val smallWidth = 100 // dp
@@ -126,18 +133,8 @@ class TvDetailFragment : Fragment() {
         showReviewsButton.setOnClickListener {
             toggleReviewsVisibility()
         }
-        var isLiked = false
-
-        loveButton.setOnClickListener {
-            if (isLiked) {
-                loveButton.speed = -1f
-                loveButton.playAnimation()
-            } else {
-                loveButton.speed = 1f
-                loveButton.playAnimation()
-            }
-            isLiked = !isLiked
-        }
+        checkIfTvShowIsFavorite()
+        setupLoveButton()
     }
 
     override fun onDestroyView() {
@@ -277,6 +274,101 @@ class TvDetailFragment : Fragment() {
         fetchReviews(tvShow.id)
         fetchPosters(tvShow.id)
         initializeCurrentTvShowVideos(tvShow.id)
+    }
+
+    private fun checkIfTvShowIsFavorite() {
+        val user = auth.currentUser
+        val tvShow = tvShowViewModel.selected ?: return
+
+        if (user != null) {
+            val userId = user.uid
+            val docRef = db.collection("users").document(userId)
+                .collection("tv_favorites").document(tvShow.id.toString())
+
+            docRef.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    isLiked = true
+                    loveButton.progress = 1.0f // Asegúrate de que la animación de "like" esté completa
+                } else {
+                    isLiked = false
+                    loveButton.progress = 0.0f // Asegúrate de que la animación de "like" no esté activada
+                }
+            }.addOnFailureListener { e ->
+                Log.w("TvDetailFragment", "Error checking favorites", e)
+            }
+        }
+    }
+
+    private fun setupLoveButton() {
+        loveButton.setOnClickListener {
+            val user = auth.currentUser
+            if (user != null) {
+                val userId = user.uid
+                val tvShow = tvShowViewModel.selected ?: return@setOnClickListener
+
+                if (isLiked) {
+                    removeFavorite(userId, tvShow.id)
+                } else {
+                    tvShow.poster_path?.let { it1 ->
+                        addFavorite(userId, tvShow.id, tvShow.name,
+                            it1
+                        )
+                    }
+                }
+                isLiked = !isLiked
+                toggleLoveButtonAnimation()
+            } else {
+                Toast.makeText(requireContext(), "Please log in to save favorites", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun addFavorite(userId: String, tvShowId: Int, tvShowTitle: String, poster: String) {
+        val favorite = hashMapOf(
+            "tvShowId" to tvShowId,
+            "title" to tvShowTitle,
+            "posterUrl" to poster
+        )
+
+        Log.d("TvDetailFragment", "Adding favorite: $favorite for user: $userId")
+
+        db.collection("users").document(userId)
+            .collection("tv_favorites").document(tvShowId.toString())
+            .set(favorite)
+            .addOnSuccessListener {
+                Log.d("TvDetailFragment", "Favorite added successfully")
+                Toast.makeText(requireContext(), "Added to favorites", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.w("TvDetailFragment", "Error adding favorite", e)
+                Toast.makeText(requireContext(), "Failed to add favorite", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun removeFavorite(userId: String, tvShowId: Int) {
+        Log.d("TvDetailFragment", "Removing favorite for user: $userId, tvShowId: $tvShowId")
+
+        db.collection("users").document(userId)
+            .collection("tv_favorites").document(tvShowId.toString())
+            .delete()
+            .addOnSuccessListener {
+                Log.d("TvDetailFragment", "Favorite removed successfully")
+                Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.w("TvDetailFragment", "Error removing favorite", e)
+                Toast.makeText(requireContext(), "Failed to remove favorite", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun toggleLoveButtonAnimation() {
+        if (isLiked) {
+            loveButton.speed = 1f
+            loveButton.playAnimation()
+        } else {
+            loveButton.speed = -1f
+            loveButton.playAnimation()
+        }
     }
 
 
