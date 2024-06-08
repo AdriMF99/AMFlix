@@ -11,7 +11,7 @@ class PeopleInterceptor: Interceptor {
             .url
             .newBuilder()
             .addQueryParameter(Constants.URL_PARAM_API_KEY, Constants.API_KEY)
-            .addQueryParameter(Constants.URL_PARAM_LANG, "es-ES")
+            .addQueryParameter(Constants.URL_PARAM_LANG, "en-EN")
             .build()
 
         var request = chain.request()

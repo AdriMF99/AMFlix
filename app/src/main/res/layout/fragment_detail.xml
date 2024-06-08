@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_arrow"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:background="@drawable/layout_bg_main" />
 
     <ScrollView
         android:layout_width="match_parent"

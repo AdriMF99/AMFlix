@@ -1,11 +1,16 @@
 package com.amf.amflix.ui.signin
 
 import android.app.AlertDialog
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.GridView
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,6 +28,10 @@ class RegisterFragment : Fragment() {
     private lateinit var txtusername: EditText
     private lateinit var txtpass: EditText
     private lateinit var txtname: EditText
+    private lateinit var btnImage: ImageView
+
+    private var imagenUri: Uri? = null
+    private var selectedImageResource: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +43,7 @@ class RegisterFragment : Fragment() {
         txtusername = binding.RegUsername
         txtpass = binding.RegPassword
         txtname = binding.RegName
+        btnImage = binding.btnSelectImage
 
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
@@ -45,13 +55,38 @@ class RegisterFragment : Fragment() {
             navController.navigate(R.id.navigation_login)
         }
 
+        btnImage.setOnClickListener {
+            showImageSelectionDialog()
+        }
+
         setup()
 
         return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private fun showImageSelectionDialog() {
+        val images = listOf(
+            R.drawable.image1, R.drawable.image2, R.drawable.image3,
+            R.drawable.image4, R.drawable.image5, R.drawable.image6
+        )
+
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_image_selection, null)
+        val gridView: GridView = dialogView.findViewById(R.id.gridViewImages)
+        val adapter = ImageAdapter(requireContext(), images)
+        gridView.adapter = adapter
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setTitle("Select an image")
+            .create()
+
+        gridView.setOnItemClickListener { _, _, position, _ ->
+            selectedImageResource = images[position]
+            btnImage.setImageResource(selectedImageResource!!)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun setup() {
@@ -94,6 +129,7 @@ class RegisterFragment : Fragment() {
             "userId" to userId,
             "name" to name,
             "email" to FirebaseAuth.getInstance().currentUser?.email,
+            "profileImageResource" to selectedImageResource
         )
         db.collection("users").document(userId).set(user)
             .addOnSuccessListener {

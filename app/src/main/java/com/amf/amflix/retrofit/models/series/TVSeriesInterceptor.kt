@@ -13,7 +13,7 @@ class TVSeriesInterceptor: Interceptor {
             // Si la solicitud es para obtener detalles de una película popular, solicita los detalles en español
             val urlWithParams = request.url.newBuilder()
                 .addQueryParameter(Constants.URL_PARAM_API_KEY, Constants.API_KEY)
-                .addQueryParameter(Constants.URL_PARAM_LANG, "es-ES")
+                .addQueryParameter(Constants.URL_PARAM_LANG, "en-EN")
                 .build()
 
             request = request.newBuilder()

@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -21,6 +23,7 @@ class SettingsFragment : Fragment() {
     private lateinit var tvUserEmail: TextView
     private lateinit var btnOpenLogin: ImageView
     private lateinit var btnSignOut: ImageView
+    private lateinit var userAvatar: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,7 @@ class SettingsFragment : Fragment() {
         tvUserEmail = view.findViewById(R.id.tvUserEmail)
         btnOpenLogin = view.findViewById(R.id.btn_open_login)
         btnSignOut = view.findViewById(R.id.btn_sign_out)
+        userAvatar = view.findViewById(R.id.user_avatar)
 
         val user = FirebaseAuth.getInstance().currentUser
         updateUI(user)
@@ -43,6 +47,8 @@ class SettingsFragment : Fragment() {
 
         btnSignOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
+            userAvatar.setImageResource(R.drawable.user_avatar)
+            Toast.makeText(requireContext(), "You have logged out!", Toast.LENGTH_SHORT).show()
             updateUI(null)
         }
 
@@ -56,14 +62,20 @@ class SettingsFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val name = document.getString("name")
-                        tvUserName.text = "User Name: $name"
-                        tvUserEmail.text = "Email: ${user.email}"
+                        val profileImageResource = document.getLong("profileImageResource")?.toInt()
+                        tvUserName.text = "$name"
+                        tvUserEmail.text = "${user.email}"
+                        if (profileImageResource != null) {
+                            userAvatar.setImageResource(profileImageResource)
+                        } else {
+                            userAvatar.setImageResource(R.drawable.user_avatar)
+                        }
                     } else {
                         tvUserName.text = "User Name: N/A"
                     }
                 }
                 .addOnFailureListener { exception ->
-                    tvUserName.text = "User Name: N/A"
+                    //tvUserName.text = "User Name: N/A"
                 }
             btnOpenLogin.visibility = View.GONE
             btnSignOut.visibility = View.VISIBLE
