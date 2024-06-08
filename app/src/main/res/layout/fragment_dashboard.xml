@@ -221,7 +221,7 @@
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/logo"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"

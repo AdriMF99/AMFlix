@@ -134,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/release_date"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceLabelLarge" />
 
@@ -165,7 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/vote_count"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceLabelLarge" />
 

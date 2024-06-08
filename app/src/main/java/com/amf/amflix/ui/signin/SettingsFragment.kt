@@ -1,13 +1,16 @@
 package com.amf.amflix.ui.signin
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
@@ -24,6 +27,7 @@ class SettingsFragment : Fragment() {
     private lateinit var btnOpenLogin: ImageView
     private lateinit var btnSignOut: ImageView
     private lateinit var userAvatar: ImageView
+    private lateinit var switchDarkMode: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +41,20 @@ class SettingsFragment : Fragment() {
         btnOpenLogin = view.findViewById(R.id.btn_open_login)
         btnSignOut = view.findViewById(R.id.btn_sign_out)
         userAvatar = view.findViewById(R.id.user_avatar)
+        switchDarkMode = view.findViewById(R.id.switch_dark_mode)
 
         val user = FirebaseAuth.getInstance().currentUser
         updateUI(user)
+
+        switchDarkMode.isChecked = isDarkModeOn()
+        switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            restartActivity()
+        }
 
         btnOpenLogin.setOnClickListener {
             findNavController().navigate(R.id.navigation_loginorregister)
@@ -90,5 +105,19 @@ class SettingsFragment : Fragment() {
     private fun showBottomNavigation() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    private fun isDarkModeOn(): Boolean {
+        return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> false
+        }
+    }
+
+    fun restartActivity() {
+        val intent = requireActivity().intent
+        requireActivity().finish()
+        startActivity(intent)
     }
 }

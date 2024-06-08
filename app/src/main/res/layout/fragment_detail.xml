@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C1B1C">
+    android:background="?attr/colorError">
 
     <ImageButton
         android:id="@+id/backarrow"
@@ -110,7 +110,7 @@
                         android:fontFamily="@font/lemonmilk_bold"
                         android:text="Transformers"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -128,7 +128,7 @@
                         android:fontFamily="@font/lemonmilk_medium"
                         android:text="kakota"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="16sp"
                         android:textStyle="italic" />
                 </LinearLayout>
@@ -164,7 +164,7 @@
                             android:fontFamily="@font/lemonmilk_light"
                             android:gravity="center"
                             android:text="Release Date"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="14sp" />
 
                         <TextView
@@ -174,7 +174,7 @@
                             android:fontFamily="@font/lemonmilk_light"
                             android:gravity="center"
                             android:text="Rating"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="14sp" />
 
                         <TextView
@@ -184,7 +184,7 @@
                             android:fontFamily="@font/lemonmilk_light"
                             android:gravity="center"
                             android:text="Popularity"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -204,7 +204,7 @@
                             android:fontFamily="@font/lemonmilk_medium"
                             android:gravity="center"
                             android:text="26-11-2023"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="14sp" />
 
                         <TextView
@@ -215,7 +215,7 @@
                             android:fontFamily="@font/lemonmilk_medium"
                             android:gravity="center"
                             android:text="4.5"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="14sp" />
 
                         <TextView
@@ -226,7 +226,7 @@
                             android:fontFamily="@font/lemonmilk_medium"
                             android:gravity="center"
                             android:text="10000"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorOnBackground"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -254,7 +254,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="TOTAL VOTE : "
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="14sp" />
 
                     <TextView
@@ -263,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_medium"
                         android:text="200"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -296,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Overview"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="20sp" />
 
                     <TextView
@@ -306,7 +306,7 @@
                         android:layout_marginTop="3dp"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="lorem ipsum dolor sit amet!"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -322,7 +322,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Cast"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="20sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -345,7 +345,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Crew"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="20sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -361,7 +361,7 @@
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Posters"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="20sp" />
 
                     <androidx.recyclerview.widget.RecyclerView

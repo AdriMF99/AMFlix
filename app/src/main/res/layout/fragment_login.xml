@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
+    android:background="?attr/colorError"
     tools:context="com.amf.amflix.ui.signin.LoginFragment">
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:fontFamily="@font/lemonmilk_medium"
             android:text="Log in"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
             android:fontFamily="@font/lemonmilk_medium"
             android:paddingLeft="25sp"
             android:text="Log in with one of the options."
-            android:textColor="#B8B8B8"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -129,7 +129,7 @@
             android:layout_marginTop="30sp"
             android:fontFamily="@font/lemonmilk_medium"
             android:text="Email"
-            android:textColor="#E4E4E4"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -152,7 +152,7 @@
                 android:background="@null"
                 android:hint="example@email.com"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textColorHint="#B8B8B8"
                 android:textSize="17sp" />
 
@@ -165,7 +165,7 @@
             android:layout_marginTop="20sp"
             android:fontFamily="@font/lemonmilk_medium"
             android:text="Password"
-            android:textColor="#E4E4E4"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -188,7 +188,7 @@
                 android:background="@null"
                 android:hint="password"
                 android:inputType="textPassword"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textColorHint="#B8B8B8"
                 android:textSize="17sp" />
 
@@ -229,7 +229,7 @@
             android:fontFamily="@font/lemonmilk_medium"
             android:onClick="singup"
             android:text="Don't have an account? "
-            android:textColor="#B8B8B8"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="15sp" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -239,7 +239,7 @@
             android:fontFamily="@font/lemonmilk_medium"
             android:onClick="singup"
             android:text="Sing up"
-            android:textColor="#B8B8B8"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="15sp"
             android:textStyle="bold" />
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
+    android:background="?attr/colorError"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.signin.LoginOrRegisterFragment">
 
@@ -36,7 +36,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="55dp"
         android:elevation="30dp"
-        android:shadowColor="@color/white"
+        android:shadowColor="?attr/colorOnBackground"
         android:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:elevation="30dp"
-        android:shadowColor="@color/white"
+        android:shadowColor="?attr/colorOnBackground"
         android:backgroundTint="@color/black"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C1B1C">
+    android:background="?attr/colorError">
 
     <ImageButton
         android:id="@+id/backarrow"
@@ -83,7 +83,7 @@
                         android:fontFamily="@font/lemonmilk_bold"
                         android:text="Nombre de la Persona"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -99,7 +99,7 @@
                         android:layout_gravity="center"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Biografía de la Persona"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="12sp"
                         android:textStyle="italic" />
                 </LinearLayout>
@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="Movies"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="20sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -139,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lemonmilk_light"
                         android:text="TV Shows"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="20sp" />
 
                     <androidx.recyclerview.widget.RecyclerView

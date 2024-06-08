@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/window_background"
+    android:background="?attr/colorError"
     android:layout_height="match_parent"
     tools:context=".ui.Home.HomeFragment">
 
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Popular Movies"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Top Rated Movies"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Trending Movies"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Popular TV Shows"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Top Rated TV Shows"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Trending TV Shows"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -200,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="More ->"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </LinearLayout>
 

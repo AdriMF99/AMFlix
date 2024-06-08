@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
+    android:background="?attr/colorError"
     tools:context=".ui.signin.SettingsFragment">
 
     <ScrollView
@@ -23,6 +23,7 @@
             android:gravity="center_horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_user_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -53,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:text="John Doe"
                         android:textSize="18sp"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnBackground"
                         android:textStyle="bold"
                         android:layout_marginBottom="4dp" />
 
@@ -63,11 +64,23 @@
                         android:layout_height="wrap_content"
                         android:text="john@example.com"
                         android:textSize="16sp"
-                        android:textColor="@color/white" />
+                        android:textColor="?attr/colorOnBackground" />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <Switch
+                android:id="@+id/switch_dark_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark Mode"
+                android:textColor="?attr/colorOnBackground"
+                app:layout_constraintTop_toBottomOf="@id/card_view_user_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <!-- App Information Section -->
             <TextView
@@ -79,13 +92,13 @@
                 android:textStyle="bold"
                 android:paddingTop="16dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/white" />
+                android:textColor="?attr/colorOnBackground" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Version: 1.0.0"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:paddingBottom="8dp" />
 
@@ -94,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="Developed by AMF Team"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnBackground"
                 android:paddingBottom="16dp" />
 
             <ImageView
