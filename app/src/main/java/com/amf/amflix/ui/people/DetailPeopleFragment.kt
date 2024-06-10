@@ -58,6 +58,9 @@ class DetailPeopleFragment : Fragment() {
         person?.let {
             binding.personName.text = it.name
             binding.personBiography.text = it.biography
+            binding.personBirthday.text = it.birthday
+            binding.personPlaceOfBirth.text = it.place_of_birth
+            binding.personKnownForDepartment.text = it.known_for_department
 
             Glide.with(this)
                 .load(Constants.IMAGE_BASE_URL + it.profile_path)

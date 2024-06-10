@@ -5,6 +5,7 @@ data class CrewResponse(
 )
 
 data class Crew(
+    val id: Int,
     val name: String,
     val job: String,
     val profile_path: String

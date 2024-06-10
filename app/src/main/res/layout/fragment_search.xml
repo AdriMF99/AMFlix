@@ -52,7 +52,7 @@
             android:elevation="@dimen/cardview_compat_inset_shadow"
             android:text="Movies"
             android:textAlignment="center"
-            android:textColor="@drawable/text_color_selector"
+            android:textColor="?attr/colorOnBackground"
             android:textStyle="bold"
             android:button="@null"
             android:background="@drawable/radio_button_selector" />
@@ -65,7 +65,7 @@
             android:elevation="@dimen/cardview_compat_inset_shadow"
             android:text="Series"
             android:textAlignment="center"
-            android:textColor="@drawable/text_color_selector"
+            android:textColor="?attr/colorOnBackground"
             android:textStyle="bold"
             android:button="@null"
             android:background="@drawable/radio_button_selector" />

@@ -435,7 +435,12 @@ class DetailFragment : Fragment() {
             override fun onResponse(call: retrofit2.Call<CrewResponse>, response: retrofit2.Response<CrewResponse>) {
                 if (response.isSuccessful) {
                     val crewList = response.body()?.crew ?: emptyList()
-                    crewAdapter = CrewAdapter(crewList)
+                    crewAdapter = CrewAdapter(crewList) { personId ->
+                        val bundle = Bundle().apply {
+                            putInt("personId", personId)
+                        }
+                        findNavController().navigate(R.id.navigation_detailsperson, bundle)
+                    }
                     crewRecyclerView.adapter = crewAdapter
                 } else {
                     Log.e("DetailFragment", "Error: ${response.errorBody()?.string()}")
