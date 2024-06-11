@@ -108,29 +108,29 @@ class SearchFragment : Fragment() {
                 val type = typeSpinner.selectedItem.toString().lowercase()
                 val year = yearInput.text.toString()
                 val sortBy = when (sortSpinner.selectedItem.toString()) {
-                    "Popularidad" -> "popularity.desc"
-                    "Fecha de lanzamiento" -> if (type == "película") "release_date.desc" else "first_air_date.desc"
-                    "Calificación" -> "vote_average.desc"
+                    "Popularity" -> "popularity.desc"
+                    "Release Date" -> if (type == "movie") "release_date.desc" else "first_air_date.desc"
+                    "Rating" -> "vote_average.desc"
                     else -> "popularity.desc"
                 }
                 val genre = when (genreSpinner.selectedItem.toString()) {
-                    "Acción" -> if (type == "película") "28" else "10759"
-                    "Animación" -> "16"
-                    "Comedia" -> "35"
-                    "Crimen" -> "80"
-                    "Documental" -> "99"
+                    "Action" -> if (type == "movie") "28" else "10759"
+                    "Animation" -> "16"
+                    "Comedy" -> "35"
+                    "Crime" -> "80"
+                    "Documentary" -> "99"
                     "Drama" -> "18"
-                    "Familia" -> "10751"
-                    "Fantasía" -> if (type == "película") "14" else "10765"
-                    "Historia" -> if (type == "película") "36" else ""
-                    "Terror" -> if (type == "película") "27" else ""
-                    "Música" -> if (type == "película") "10402" else ""
-                    "Misterio" -> "9648"
-                    "Romance" -> if (type == "película") "10749" else ""
-                    "Ciencia ficción" -> if (type == "película") "878" else "10765"
-                    "Película de TV" -> if (type == "película") "10770" else ""
-                    "Suspense" -> if (type == "película") "53" else ""
-                    "Bélica" -> if (type == "película") "10752" else "10768"
+                    "Family" -> "10751"
+                    "Fantasy" -> if (type == "movie") "14" else "10765"
+                    "History" -> if (type == "movie") "36" else ""
+                    "Horror" -> if (type == "movie") "27" else ""
+                    "Music" -> if (type == "movie") "10402" else ""
+                    "Mystery" -> "9648"
+                    "Romance" -> if (type == "movie") "10749" else ""
+                    "Science Fiction" -> if (type == "movie") "878" else "10765"
+                    "TV Movie" -> if (type == "movie") "10770" else ""
+                    "Thriller" -> if (type == "movie") "53" else ""
+                    "War" -> if (type == "movie") "10752" else "10768"
                     "Western" -> "37"
                     else -> ""
                 }
@@ -138,7 +138,7 @@ class SearchFragment : Fragment() {
                 val radioGroup = view?.findViewById<RadioGroup>(R.id.radioGroup)
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
 
-                if (type == "película") {
+                if (type == "movie") {
                     radioGroup?.check(R.id.radioButtonMovies)
                     viewModel.fetchFilteredMovies(searchView.query.toString() ,genre, year, sortBy, type)
                     recyclerView?.adapter = adapter

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="type_array">
-        <item>Película</item>
-        <item>Serie</item>
+        <item>Movie</item>
+        <item>TV Show</item>
     </string-array>
     <string-array name="sort_array">
-        <item>Popularidad</item>
-        <item>Fecha de lanzamiento</item>
-        <item>Calificación</item>
+        <item>Popularity</item>
+        <item>Release Date</item>
+        <item>Rating</item>
     </string-array>
     <string-array name="genre_array">
-        <item>Acción</item>
-        <item>Animación</item>
-        <item>Comedia</item>
-        <item>Crimen</item>
-        <item>Documental</item>
+        <item>Action</item>
+        <item>Animation</item>
+        <item>Comedy</item>
+        <item>Crime</item>
+        <item>Documentary</item>
         <item>Drama</item>
-        <item>Fantasía</item>
-        <item>Familia</item>
-        <item>Historia</item>
-        <item>Terror</item>
-        <item>Música</item>
-        <item>Misterio</item>
+        <item>Fantasy</item>
+        <item>Family</item>
+        <item>History</item>
+        <item>Horror</item>
+        <item>Music</item>
+        <item>Mystery</item>
         <item>Romance</item>
-        <item>Ciencia ficción</item>
-        <item>Película de TV</item>
-        <item>Suspense</item>
-        <item>Bélica</item>
+        <item>Science Fiction</item>
+        <item>TV Movie</item>
+        <item>Thriller</item>
+        <item>War</item>
         <item>Western</item>
     </string-array>
 </resources>
