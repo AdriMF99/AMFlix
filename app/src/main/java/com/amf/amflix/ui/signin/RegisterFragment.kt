@@ -2,6 +2,7 @@ package com.amf.amflix.ui.signin
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +17,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
 import com.amf.amflix.databinding.FragmentRegisterBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterFragment : Fragment() {
@@ -28,6 +33,7 @@ class RegisterFragment : Fragment() {
     private lateinit var txtpass: EditText
     private lateinit var txtname: EditText
     private lateinit var btnImage: ImageView
+    private val GOOGLE_SIGN_IN = 100
 
     private var imagenUri: Uri? = null
     private var selectedImageResource: Int? = null
@@ -60,6 +66,18 @@ class RegisterFragment : Fragment() {
         // Configurar el clic del botón de imagen para seleccionar una imagen
         btnImage.setOnClickListener {
             showImageSelectionDialog()
+        }
+
+        binding.LogGoogle.setOnClickListener {
+            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+            val googleClient = GoogleSignIn.getClient(requireContext(), googleConf)
+            googleClient.signOut()
+
+            startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
 
         // Configurar el botón de registro
@@ -127,6 +145,34 @@ class RegisterFragment : Fragment() {
                         }
                     }
             }
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+            try {
+                val account = task.getResult(ApiException::class.java)
+
+                if (account != null){
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            Toast.makeText(requireContext(), "Has iniciado sesión!", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.navigation_settings)
+                        } else{
+                            showAlert()
+                        }
+                    }
+                }
+            } catch (e: ApiException){
+                showAlert()
+            }
+
         }
     }
 
