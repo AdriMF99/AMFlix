@@ -71,6 +71,7 @@ class HomeFragment : Fragment() {
         setupObservers()
         handler.postDelayed(autoScrollRunnable, 1500)
 
+        // Según dónde pulses se mostrarán una tipo de películas o series.
         morePopular.setOnClickListener {
             Type.tipopeli = "movie/popular"
             findNavController().navigate(R.id.navigation_movies)
@@ -173,6 +174,7 @@ class HomeFragment : Fragment() {
         })
     }
 
+    // No se puede pulsar en una película del carrusel en movimiento, pero queda bonito.
     private fun autoScrollRecyclerView(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
         val lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()

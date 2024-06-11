@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.amf.amflix.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LoginOrRegisterFragment : Fragment() {
 
@@ -15,6 +16,7 @@ class LoginOrRegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        showBottomNavigation()
         val view = inflater.inflate(R.layout.fragment_login_or_register, container, false)
 
         val btnOpenLogin = view.findViewById<Button>(R.id.gotologinButton)
@@ -29,5 +31,10 @@ class LoginOrRegisterFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun showBottomNavigation() {
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 }

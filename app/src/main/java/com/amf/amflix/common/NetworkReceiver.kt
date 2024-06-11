@@ -8,6 +8,12 @@ import android.net.NetworkInfo
 import androidx.navigation.NavController
 import com.amf.amflix.R
 
+/**
+ * Para comprobar la conexión a internet durante nuestra navegación
+ * por la app, si no hay conexión nos lleva a un fragmento, cuando
+ * vuelva la conexión, nos llevará de nuevo al menú principal.
+ */
+
 class NetworkReceiver(private val navController: NavController) : BroadcastReceiver() {
     private var previousDestination: Int? = null
 

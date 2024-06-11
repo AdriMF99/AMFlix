@@ -55,6 +55,7 @@ class SearchFragment : Fragment() {
         searchButton = view2.findViewById(R.id.apply_filters_button)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
+        // Acciones si pulso  Movies o Series
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radioButtonMovies -> {
@@ -82,6 +83,7 @@ class SearchFragment : Fragment() {
         adapter = SearchAdapter { movie -> navigateToMovieDetail(movie) }
         adaptertv = SearchAdaptertv { serie -> navigateToTvShowDetail(serie) }
 
+        // Para la paginación, pasar de página al acabar
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -93,6 +95,7 @@ class SearchFragment : Fragment() {
             }
         })
 
+        // Filtros, películas y series tienen ids diferentes para los géneros
         filterButton.setOnClickListener {
             val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_filters, null)
             val dialog = BottomSheetDialog(requireContext())
@@ -173,6 +176,7 @@ class SearchFragment : Fragment() {
         }
     }
 
+    // Poner las películas o series buscadas en el rv
     private fun setupSearchView(isMovie: Boolean) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -209,6 +213,7 @@ class SearchFragment : Fragment() {
         findNavController().navigate(R.id.navigation_tvdetails)
     }
 
+    // Pasar de página
     private fun loadNextPage(isMovie: Boolean) {
         currentPage++
         if (isMovie) {

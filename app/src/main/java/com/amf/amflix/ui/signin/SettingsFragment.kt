@@ -43,9 +43,11 @@ class SettingsFragment : Fragment() {
         userAvatar = view.findViewById(R.id.user_avatar)
         switchDarkMode = view.findViewById(R.id.switch_dark_mode)
 
+        // Obtener el usuario que está logueado
         val user = FirebaseAuth.getInstance().currentUser
         updateUI(user)
 
+        // cambiar tema de la aplicación
         switchDarkMode.isChecked = isDarkModeOn()
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -56,10 +58,12 @@ class SettingsFragment : Fragment() {
             restartActivity()
         }
 
+        // Ir al SignIn o SignUp
         btnOpenLogin.setOnClickListener {
             findNavController().navigate(R.id.navigation_loginorregister)
         }
 
+        // Cerrar sesión
         btnSignOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             userAvatar.setImageResource(R.drawable.user_avatar)
@@ -70,6 +74,7 @@ class SettingsFragment : Fragment() {
         return view
     }
 
+    // Poner los datos y la foto de perfil del usuario logueado
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val db = FirebaseFirestore.getInstance()

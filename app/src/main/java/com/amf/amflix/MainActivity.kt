@@ -16,6 +16,11 @@ import com.amf.amflix.common.NetworkUtils
 import com.amf.amflix.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+/**
+ * En esta clase, la principal, hay una vista oculta, que se pondrá en funcionamiento
+ * próximamente para un modo Admin.
+ */
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -72,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+    /* No puedes pulsar atrás si estás en uno de estos fragmentos. */
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val dest = navController.currentDestination?.id

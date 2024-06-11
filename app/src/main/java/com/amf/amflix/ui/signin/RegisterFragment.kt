@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +32,7 @@ class RegisterFragment : Fragment() {
     private var imagenUri: Uri? = null
     private var selectedImageResource: Int? = null
 
+    // Inflar el diseño del fragmento y configurar los elementos de la interfaz de usuario
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,25 +45,30 @@ class RegisterFragment : Fragment() {
         txtname = binding.RegName
         btnImage = binding.btnSelectImage
 
+        // Ocultar la barra de navegación inferior en este fragmento
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.GONE
 
+        // Configurar el clic del texto para ir a la pantalla de inicio de sesión
         golog.setOnClickListener {
             Toast.makeText(requireContext(), "Login", Toast.LENGTH_SHORT).show()
             val navController = findNavController()
             navController.navigate(R.id.navigation_login)
         }
 
+        // Configurar el clic del botón de imagen para seleccionar una imagen
         btnImage.setOnClickListener {
             showImageSelectionDialog()
         }
 
+        // Configurar el botón de registro
         setup()
 
         return view
     }
 
+    // Mostrar un cuadro de diálogo para seleccionar una imagen
     private fun showImageSelectionDialog() {
         val images = listOf(
             R.drawable.image1, R.drawable.image2, R.drawable.image3,
@@ -80,6 +85,7 @@ class RegisterFragment : Fragment() {
             .setTitle("Select an image")
             .create()
 
+        // Manejar el clic en una imagen del cuadro de diálogo
         gridView.setOnItemClickListener { _, _, position, _ ->
             selectedImageResource = images[position]
             btnImage.setImageResource(selectedImageResource!!)
@@ -89,6 +95,7 @@ class RegisterFragment : Fragment() {
         dialog.show()
     }
 
+    // Configurar el botón de registro para crear una cuenta de usuario
     private fun setup() {
         binding.btnReg.setOnClickListener {
             if (txtusername.text.isNotEmpty() && txtpass.text.isNotEmpty() && txtname.text.isNotEmpty()) {
@@ -123,6 +130,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    // Guardar la información del usuario en Firestore
     private fun saveUserToFirestore(userId: String, name: String) {
         val db = FirebaseFirestore.getInstance()
         val user = hashMapOf(
@@ -140,6 +148,7 @@ class RegisterFragment : Fragment() {
             }
     }
 
+    // Mostrar una alerta en caso de error
     private fun showAlert() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Error")

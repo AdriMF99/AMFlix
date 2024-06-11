@@ -7,6 +7,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Estas clases se repiten una y otra vez para cada modelo, pero sólo pondré aquí comentarios
+ * para no ser redundante.
+ */
+
 class MovieClient {
 
     private val movieService: MovieService
